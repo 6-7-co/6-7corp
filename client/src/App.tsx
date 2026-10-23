@@ -13,7 +13,7 @@ import { Contact } from './pages/Contact';
 import { NotFound } from './pages/NotFound';
 import { AdminApp } from './components/admin/AdminApp';
 import { AdminDashboard } from './components/admin/AdminDashboard';
-import { ADMIN_PATH } from './lib/adminRoute';
+import { ADMIN_ENABLED, ADMIN_PATH } from './lib/adminRoute';
 import { hashId, scrollToSectionWhenReady } from './lib/scroll';
 
 // Admin pages are heavier — code-split them.
@@ -64,7 +64,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const location = useLocation();
-  const isAdmin = location.pathname === `/${ADMIN_PATH}` || location.pathname.startsWith(`/${ADMIN_PATH}/`);
+  const isAdmin =
+    ADMIN_ENABLED &&
+    (location.pathname === `/${ADMIN_PATH}` || location.pathname.startsWith(`/${ADMIN_PATH}/`));
   const segmentKey = location.pathname.split('/')[1] || 'home';
 
   return (

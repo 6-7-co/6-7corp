@@ -7,7 +7,8 @@
  *   (use SEED_FORCE=1 to overwrite, SEED_RESET=1 to wipe content first)
  * - admins are never stored in the file: they come from ADMIN_USER/ADMIN_PASSWORD
  */
-import { closeDb } from './lib/db.js';
+import { randomBytes } from 'node:crypto';
+import { closeDb, get } from './lib/db.js';
 import {
   applySeed,
   ensureAdmin,
@@ -18,7 +19,7 @@ import {
 } from './lib/seed-content.js';
 
 const ADMIN_USER = process.env.ADMIN_USER ?? 'admin';
-const ADMIN_PASS = process.env.ADMIN_PASSWORD ?? 'admin12345';
+const ADMIN_PASS = process.env.ADMIN_PASSWORD;
 const RESET = /^(1|true|yes)$/i.test(process.env.SEED_RESET ?? '');
 const FORCE = /^(1|true|yes)$/i.test(process.env.SEED_FORCE ?? '');
 
@@ -31,8 +32,20 @@ async function main() {
     );
   }
 
-  const adminResult = await ensureAdmin(ADMIN_USER, ADMIN_PASS);
-  console.log(`Admin "${ADMIN_USER}" ${adminResult === 'created' ? 'created' : 'password refreshed'}.`);
+  // No credentials are baked into the repository: either they come from the
+  // environment, or a one-off password is generated and printed once.
+  const existing = await get<{ id: number }>('SELECT id FROM admins WHERE username = ?', ADMIN_USER);
+  if (ADMIN_PASS) {
+    const adminResult = await ensureAdmin(ADMIN_USER, ADMIN_PASS);
+    console.log(`Account "${ADMIN_USER}" ${adminResult === 'created' ? 'created' : 'password refreshed'}.`);
+  } else if (existing) {
+    console.log(`Account "${ADMIN_USER}" already exists — password left unchanged.`);
+  } else {
+    const generated = randomBytes(9).toString('base64url');
+    await ensureAdmin(ADMIN_USER, generated);
+    console.log(`Account "${ADMIN_USER}" created with a generated password:\n  ${generated}`);
+    console.log('Change it any time: npm run admin:set -- <login> <new-password>');
+  }
 
   if ((await hasContent()) && !RESET && !FORCE) {
     console.log('\nℹ Database already has content — seed data was NOT applied.');

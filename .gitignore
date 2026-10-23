@@ -21,6 +21,9 @@ server/uploads/*
 .env.local
 .env.*.local
 
+# Private notes (never committed)
+OPS.md
+
 # Editor / OS
 .DS_Store
 *.log

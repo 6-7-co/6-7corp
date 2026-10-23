@@ -282,7 +282,14 @@ export function migrate(): Promise<void> {
     migration = (async () => {
       if (USING_PG) {
         const client = await pgClient();
-        await client.query(SCHEMA_PG);
+        // Neon executes queries as prepared statements and Postgres rejects
+        // several commands in one prepared statement, so run the DDL one by one.
+        const statements = SCHEMA_PG.split(';')
+          .map((statement) => statement.trim())
+          .filter(Boolean);
+        for (const statement of statements) {
+          await client.query(statement, []);
+        }
         return;
       }
       const db = await sqliteClient();

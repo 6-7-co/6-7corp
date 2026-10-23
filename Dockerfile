@@ -6,9 +6,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY client ./client
 COPY server ./server
-# The admin panel lives on a non-obvious path; override at build time:
-#   docker build --build-arg VITE_ADMIN_PATH=/my-secret-panel .
-ARG VITE_ADMIN_PATH=studio-6-7
+# Path of the private content area, supplied at build time (no default):
+#   docker build --build-arg VITE_ADMIN_PATH=my-private-panel .
+ARG VITE_ADMIN_PATH=""
+ENV VITE_ADMIN_PATH=$VITE_ADMIN_PATH
 ENV VITE_ADMIN_PATH=$VITE_ADMIN_PATH
 RUN npm ci
 RUN npm -w client run build
