@@ -4,16 +4,6 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "client/dist",
-  "functions": {
-    "api/[...path].js": {
-      "memory": 1024,
-      "maxDuration": 30
-    },
-    "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
