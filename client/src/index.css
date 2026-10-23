@@ -1,0 +1,246 @@
+@import 'tailwindcss';
+
+/* ----------------------------------------------------------------------------
+   6-7 Corporation — monochrome design system
+   Pure black / white, grayscale accents, monospace details.
+   Theme-switchable: every color token is backed by a CSS variable so the
+   whole UI flips between dark and light.
+---------------------------------------------------------------------------- */
+
+@theme {
+  /* Semantic colors -> CSS variables (overridden per theme below) */
+  --color-white: var(--fg);
+  --color-black: var(--bg);
+  --color-bg: var(--bg);
+  --color-ink: var(--bg);
+  --color-ink-900: var(--bg-1);
+  --color-ink-800: var(--bg-2);
+  --color-ink-700: var(--bg-3);
+  --color-ink-600: var(--bg-3);
+  --color-ink-500: var(--bg-3);
+  --color-paper: var(--fg);
+  --color-paper-900: var(--fg);
+  --color-paper-800: var(--fg);
+  --color-paper-700: var(--muted);
+  --color-paper-600: var(--muted);
+  --color-paper-500: var(--muted);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-rev: marquee-rev 30s linear infinite;
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-float-slow: float 14s ease-in-out infinite;
+  --animate-spin-slow: spin 60s linear infinite;
+  --animate-pulse-ring: pulse-ring 4s ease-out infinite;
+}
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-28px) rotate(6deg); }
+}
+@keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes glitch {
+  0% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+  20% { clip-path: inset(60% 0 20% 0); transform: translate(-3px, 1px); }
+  40% { clip-path: inset(30% 0 50% 0); transform: translate(2px, -1px); }
+  60% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+  80% { clip-path: inset(70% 0 10% 0); transform: translate(1px, -1px); }
+  100% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+}
+
+/* ----------------------------------------------------------- theme vars ---- */
+:root {
+  --fg: #ffffff;
+  --bg: #000000;
+  --bg-1: #0a0a0a;
+  --bg-2: #141414;
+  --bg-3: #1c1c1c;
+  --muted: #a3a3a3;
+  --line: rgba(255, 255, 255, 0.12);
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --fg: #000000;
+  --bg: #ffffff;
+  --bg-1: #f5f5f5;
+  --bg-2: #ececec;
+  --bg-3: #e2e2e2;
+  --muted: #525252;
+  --line: rgba(0, 0, 0, 0.12);
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------- base ---- */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::selection { background: var(--fg); color: var(--bg); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ------------------------------------------------------------- utilities --- */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+.blend-screen { mix-blend-mode: screen; }
+.blend-difference { mix-blend-mode: difference; }
+.blend-overlay { mix-blend-mode: overlay; }
+
+/* Grid + grain backgrounds (theme-aware) */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--fg) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--fg) 6%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 59;
+  opacity: 0.05;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    color-mix(in oklab, var(--fg) 50%, transparent) 3px,
+    transparent 4px
+  );
+}
+
+.glow {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--fg) 25%, transparent),
+    0 0 60px -10px color-mix(in oklab, var(--fg) 35%, transparent);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+/* Glitch text effect (monochrome) */
+.glitch { position: relative; display: inline-block; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--fg);
+  mix-blend-mode: difference;
+  animation: glitch-x 3.2s infinite steps(2);
+}
+.glitch::after {
+  color: var(--fg);
+  mix-blend-mode: difference;
+  animation: glitch-y 2.6s infinite steps(2);
+}
+@keyframes glitch-x {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-3px, 1px); }
+  40% { transform: translate(3px, -1px); }
+  60% { transform: translate(-2px, 1px); }
+  80% { transform: translate(2px, -1px); }
+}
+@keyframes glitch-y {
+  0%, 100% { clip-path: inset(0 0 92% 0); }
+  25% { clip-path: inset(72% 0 8% 0); }
+  50% { clip-path: inset(34% 0 48% 0); }
+  75% { clip-path: inset(8% 0 76% 0); }
+}
+
+/* Big blurred watermark */
+.watermark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--fg);
+  opacity: 0.05;
+  filter: blur(2px);
+  user-select: none;
+}
+
+.marquee-track { display: flex; width: max-content; animation: var(--animate-marquee); }
+.marquee-track-rev { display: flex; width: max-content; animation: var(--animate-marquee-rev); }
+
+.card-hover {
+  transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
+}
+.card-hover:hover {
+  border-color: color-mix(in oklab, var(--fg) 50%, transparent);
+  background: color-mix(in oklab, var(--fg) 2%, transparent);
+}
+
+/* z-md monochrome theming */
+.zmd {
+  --zmd-accent: var(--fg);
+  --zmd-accent-bg: color-mix(in oklab, var(--fg) 8%, transparent);
+  --zmd-code-bg: color-mix(in oklab, var(--fg) 8%, transparent);
+  --zmd-pre-bg: var(--bg-1);
+  --zmd-border: color-mix(in oklab, var(--fg) 12%, transparent);
+  --zmd-text: color-mix(in oklab, var(--fg) 85%, var(--bg));
+  --zmd-heading: var(--fg);
+  --zmd-tok-keyword: var(--fg);
+  --zmd-tok-string: var(--muted);
+  --zmd-tok-number: var(--fg);
+  --zmd-tok-comment: color-mix(in oklab, var(--fg) 45%, var(--bg));
+  --zmd-tok-function: color-mix(in oklab, var(--fg) 92%, var(--bg));
+}
+.zmd-heading { color: var(--zmd-heading); }
+.zmd-paragraph { color: var(--zmd-text); }
+.zmd-figure { margin: 1rem 0; }
+.zmd-figure img { max-width: 100%; border-radius: 0.75rem; border: 1px solid var(--zmd-border); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

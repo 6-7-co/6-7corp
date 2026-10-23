@@ -1,0 +1,21 @@
+{
+  "name": "6-7corp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "6-7 Corporation — animated black & white corporate website with admin CMS",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "npm -w client run dev",
+    "dev:server": "npm -w server run dev",
+    "dev": "npm -w client run dev",
+    "build:client": "npm -w client run build",
+    "start:server": "npm -w server run start",
+    "seed": "npm -w server run seed"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
