@@ -2,6 +2,7 @@
   "settings": {
     "clients": "[\"northwind\", \"atlas\", \"waveform\", \"MONO\", \"kite\", \"STACK\"]",
     "company_name": "6-7 Corporation",
+    "description": "6-7 Corporation — студия продуктовой разработки: интерфейсы, распределённые системы и безопасность для команд, которым важно качество.",
     "description_en": "6-7 Corporation is a product engineering studio: interfaces, distributed systems and security for teams that care about craft.",
     "description_ru": "6-7 Corporation — студия продуктовой разработки: интерфейсы, распределённые системы и безопасность для команд, которым важно качество.",
     "email": "hello@6-7corp.com",
@@ -23,6 +24,7 @@
     "location_en": "Stockholm · remote",
     "location_ru": "Стокгольм · удалённо",
     "stats": "[{\"value\": \"150+\", \"label_ru\": \"запущенных продуктов\", \"label_en\": \"products shipped\"}, {\"value\": \"12\", \"label_ru\": \"лет в разработке\", \"label_en\": \"years building\"}, {\"value\": \"99,9%\", \"label_ru\": \"аптайм сервисов\", \"label_en\": \"service uptime\"}]",
+    "tagline": "Цифровые продукты, которые работают.",
     "tagline_en": "Digital products that hold up",
     "tagline_ru": "Цифровые продукты, которые работают",
     "telegram": ""

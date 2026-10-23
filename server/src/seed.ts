@@ -19,6 +19,7 @@ const SEED_FILE = resolve(__dirname, 'seed-data.json');
 const ADMIN_USER = process.env.ADMIN_USER ?? 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD ?? 'admin12345';
 const RESET = /^(1|true|yes)$/i.test(process.env.SEED_RESET ?? '');
+const FORCE = /^(1|true|yes)$/i.test(process.env.SEED_FORCE ?? '');
 
 type SeedPost = {
   title: string;
@@ -187,6 +188,15 @@ function resetContent() {
   console.log('Content tables cleared (SEED_RESET=1).');
 }
 
+/** True when the database already holds content (i.e. it is not a fresh install). */
+function hasContent() {
+  const posts = get<{ c: number }>('SELECT COUNT(*) c FROM posts')!.c;
+  const projects = get<{ c: number }>('SELECT COUNT(*) c FROM projects')!.c;
+  const team = get<{ c: number }>('SELECT COUNT(*) c FROM team')!.c;
+  const settings = get<{ c: number }>('SELECT COUNT(*) c FROM settings')!.c;
+  return posts + projects + team + settings > 0;
+}
+
 function main() {
   const seed = loadSeed();
   if (!Object.keys(seed).length) {
@@ -197,6 +207,18 @@ function main() {
   }
 
   ensureAdmin();
+
+  // Safety net: never overwrite content that already exists unless the caller
+  // explicitly asks for it. This protects edits made in the admin panel.
+  if (hasContent() && !RESET && !FORCE) {
+    console.log('\nℹ Database already has content — seed data was NOT applied.');
+    console.log('  Your existing posts, projects, team and settings are untouched.');
+    console.log('  • want to apply the file anyway:  SEED_FORCE=1 npm run seed');
+    console.log('  • want a clean import:            SEED_RESET=1 npm run seed');
+    console.log('  • want to save your local edits:  npm run seed:dump');
+    db.close();
+    return;
+  }
 
   if (RESET) resetContent();
 

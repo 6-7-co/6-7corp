@@ -87,9 +87,15 @@ git add server/src/seed-data.json && git commit -m "Update seed content"
 Applying it:
 
 ```bash
-npm run seed                 # upsert by slug/name — keeps extra rows you added later
+npm run seed                 # fresh DB only — skips silently if content already exists
+SEED_FORCE=1 npm run seed    # overwrite settings + upsert content in an existing DB
 SEED_RESET=1 npm run seed    # wipe posts/projects/team first, then import the file
 ```
+
+`npm run seed` is safe by default: if the database already contains posts,
+projects, team members or settings (i.e. you have edited content in the admin
+panel), it only refreshes the admin password and leaves your content alone.
+Nothing is ever deleted without `SEED_RESET=1`.
 
 Matching rules: posts and projects by `slug`, team members by `name`. Settings
 are overwritten by the file. `SEED_RESET=1` is what you want when the database
