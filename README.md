@@ -17,9 +17,10 @@ pastel statistics card — rather than glitchy or busy.
 |----------|--------|
 | Frontend | React 19 · Vite 6 · TypeScript · Tailwind CSS v4 · Framer Motion |
 | Markdown | **[@ovelwe/z-md](https://github.com/ovelwe/z-md)** (XSS-safe rendering + custom image support) |
-| Backend  | Fastify 5 · Node `node:sqlite` (parameterised queries) |
+| Backend  | Fastify 5 · PostgreSQL/Neon in production, SQLite locally (same SQL, parameterised) |
 | Auth     | bcrypt password hashes · JWT sessions · CSRF double-submit cookies |
-| Media    | Streamed, magic-byte-validated image uploads |
+| Media    | Magic-byte-validated uploads → Vercel Blob in production, `server/uploads` locally |
+| Hosting  | Vercel (Hobby) + Neon Free, or a single Docker container |
 
 ## Features
 
@@ -101,6 +102,102 @@ Matching rules: posts and projects by `slug`, team members by `name`. Settings
 are overwritten by the file. `SEED_RESET=1` is what you want when the database
 still holds old demo content.
 
+## Deploy to Vercel + Neon (free)
+
+The app runs as **static SPA on Vercel + one serverless function for `/api`**,
+with the database in **Neon Postgres** and images in **Vercel Blob**. No CORS,
+no extra servers: the API is served from the same domain under `/api`.
+
+### 1. Neon (database)
+
+1. <https://neon.tech> → sign up (GitHub login works) → **Create project**.
+2. **Region: Frankfurt (eu-central-1)** — match the Vercel region (`fra1`).
+3. Copy the connection string (it looks like
+   `postgresql://user:pass@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require`).
+
+Locally, apply the schema and push your content into Neon:
+
+```bash
+export DATABASE_URL='postgresql://…'        # Windows PowerShell: $env:DATABASE_URL='…'
+
+npm run db:push                             # create tables
+npm run seed:dump                           # (if needed) export your local SQLite content → seed-data.json
+npm run db:import -- --reset                # import seed-data.json into Neon
+ADMIN_USER=my-login ADMIN_PASSWORD='long-secret' npm run admin:set
+```
+
+`db:import --reset` wipes posts/projects/team **in Neon only** — your local
+SQLite file is never touched. `admin:set` creates the admin with a bcrypt hash
+and invalidates every session.
+
+### 2. Vercel (site + API)
+
+1. <https://vercel.com/new> → import the GitHub repo.
+2. Framework preset: **Other**. Build/output settings come from `vercel.json`:
+   - Build command `npm run build:vercel` (client bundle + serverless bundle)
+   - Output directory `client/dist`
+3. **Storage → Blob → Create** (free tier) — this adds `BLOB_READ_WRITE_TOKEN`
+   automatically.
+4. **Settings → Environment Variables** (Production + Preview):
+
+   | Name | Value |
+   |------|-------|
+   | `DATABASE_URL` | Neon pooled connection string |
+   | `JWT_SECRET` | `openssl rand -hex 32` |
+   | `VITE_ADMIN_PATH` | your secret admin path, e.g. `panel-7x2` (no slashes) |
+   | `ADMIN_USER` / `ADMIN_PASSWORD` | only needed if you run `db:import`/`admin:set` from CI |
+   | `SESSION_DAYS` | `14` (optional) |
+
+   `VITE_ADMIN_PATH` is baked into the bundle at build time — change it and
+   redeploy, then use `https://your-domain/<path>`.
+
+5. Deploy, open the site, sign in at `/<VITE_ADMIN_PATH>`.
+
+> **Important:** any content you add in the admin panel on Vercel lives in
+> Neon. `npm run seed` / `db:import` are *not* run on every deploy and never
+> overwrite existing rows unless you pass `--reset`/`SEED_RESET=1`.
+
+### 3. Custom domain
+
+Vercel → Project → **Settings → Domains → Add**: enter your domain, then at the
+registrar set `A  @ → 76.76.21.21` or the CNAME Vercel shows. TLS is issued
+automatically.
+
+If the site must be reachable from Russia without a VPN, point the domain at
+Vercel but keep in mind that some ISPs throttle the Vercel edge; the API is on
+a custom domain too, so cookies keep working either way.
+
+### 4. Moving images to Blob
+
+Local uploads live in `server/uploads`. Upload them once and rewrite the URLs
+stored in the database:
+
+```bash
+BLOB_READ_WRITE_TOKEN='vercel_blob_rw_…' DATABASE_URL='postgresql://…' npm run media:push
+```
+
+### Local development against Neon (optional)
+
+```bash
+DATABASE_URL='postgresql://…' npm run dev:server   # uses Postgres instead of SQLite
+```
+
+Without `DATABASE_URL` everything keeps working offline with SQLite in
+`server/data/app.db`, so the two modes can coexist.
+
+### Useful scripts
+
+| Command | What it does |
+|---------|--------------|
+| `npm run db:push` | create/refresh the schema (SQLite or `DATABASE_URL`) |
+| `npm run seed:dump` | export current DB content → `server/src/seed-data.json` |
+| `npm run seed` | apply `seed-data.json` (safe: skips if content exists) |
+| `SEED_RESET=1 npm run seed` | wipe content then import the file |
+| `npm run db:import -- --reset` | force import `seed-data.json` into `DATABASE_URL` |
+| `npm run admin:set -- <login> <password> [old-login]` | change admin credentials, kill sessions |
+| `npm run media:push` | copy `server/uploads` → Vercel Blob and rewrite URLs |
+| `npm run build:api` | bundle the serverless function into `api/` |
+
 ## Security posture
 
 - **SQL injection** — every query uses bound parameters (`?`); user input is
@@ -160,7 +257,12 @@ separate static server or database service is needed.
 ```
 client/    React SPA (pages, sections, components, admin CMS)
 server/    Fastify API (routes, security, db, seed)
-uploads/   media library (gitignored, runtime data)
+  src/lib/db.ts        SQLite ⇄ Postgres (Neon) driver switch
+  src/lib/storage.ts   local uploads ⇄ Vercel Blob
+  src/seed-data.json   baseline content for new installs
+api/       Vercel serverless entry (`_handler.ts`, bundled to `[...path].js`)
+scripts/   build helpers (serverless bundle)
+uploads/   local media library (gitignored, runtime data)
 ```
 
 ## Notes

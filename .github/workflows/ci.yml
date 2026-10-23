@@ -29,5 +29,8 @@ jobs:
       - name: Build client
         run: npm -w client run build
 
+      - name: Bundle serverless function
+        run: npm run build:api
+
       - name: Audit (informational)
         run: npm audit --omit=dev || true

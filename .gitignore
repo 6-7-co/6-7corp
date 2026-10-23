@@ -13,6 +13,8 @@ server/data/*.db-shm
 server/data/*.db-wal
 uploads/*
 !uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
 
 # Env
 .env
@@ -24,3 +26,8 @@ uploads/*
 *.log
 .vscode/
 .idea/
+
+# Generated Vercel functions (built by `npm run build:api`)
+api/*.js
+api/*.mjs
+.vercel

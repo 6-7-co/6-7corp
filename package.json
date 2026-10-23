@@ -2,7 +2,7 @@
   "name": "6-7corp",
   "version": "1.0.0",
   "private": true,
-  "description": "6-7 Corporation \u2014 animated black & white corporate website with admin CMS",
+  "description": "6-7 Corporation — animated black & white corporate website with admin CMS",
   "workspaces": [
     "client",
     "server"
@@ -12,11 +12,20 @@
     "dev:server": "npm -w server run dev",
     "dev": "npm -w client run dev",
     "build:client": "npm -w client run build",
+    "build:api": "node scripts/build-api.mjs",
+    "build:vercel": "npm -w client run build && node scripts/build-api.mjs",
     "start:server": "npm -w server run start",
     "seed": "npm -w server run seed",
-    "seed:dump": "npm -w server run seed:dump"
+    "seed:dump": "npm -w server run seed:dump",
+    "db:push": "npm -w server run db:push",
+    "db:import": "npm -w server run db:import",
+    "admin:set": "npm -w server run admin:set",
+    "media:push": "npm -w server run media:push"
   },
   "engines": {
     "node": ">=22.5.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12"
   }
 }
