@@ -74,49 +74,49 @@ export const SERVICES = {
   title: { ru: 'Чем мы можем помочь', en: 'What we do' } as Localized,
   subtitle: {
     ru: 'Полный цикл: от красивых обещаний и уверенного старта до затянутых сроков и убедительных объяснений.',
-    en: 'Full-service delivery: from polished promises and a confident kickoff to missed deadlines and convincing explanations.',
+    en: 'Full cycle: from beautiful promises and a confident start to stretched deadlines and convincing explanations.',
   } as Localized,
   items: [
     {
       title: { ru: 'Продуктовый дизайн', en: 'Product design' } as Localized,
       text: {
-        ru: 'Проектируем понятные интерфейсы и пользовательские сценарии, которые помогают клиенту быстрее понять, за что именно он заплатил.',
-        en: 'We research, discuss, and endlessly rethink interfaces to make even the simplest solution look like expensive strategic work.',
+        ru: 'Исследуем, обсуждаем и многократно переосмысляем интерфейсы, чтобы даже простое решение выглядело как дорогая стратегическая работа.',
+        en: 'We research, discuss and rethink interfaces over and over, so that even the simplest solution looks like expensive strategic work.',
       } as Localized,
     },
     {
       title: { ru: 'Веб-разработка', en: 'Web engineering' } as Localized,
       text: {
-        ru: 'Разрабатываем современные веб-продукты на надёжном стеке — с гибкими сроками, гибкими оценками и ещё более гибким итоговым бюджетом.',
-        en: 'We build modern web products on a reliable tech stack — with flexible timelines, flexible estimates, and even more flexible final budgets.',
+        ru: 'React, TypeScript и архитектура, в которой каждая новая функция требует отдельного бюджета, дополнительного времени и вашего терпения.',
+        en: 'React, TypeScript and an architecture where every new feature needs its own budget, extra time and your patience.',
       } as Localized,
     },
     {
       title: { ru: 'Распределённые системы', en: 'Distributed systems' } as Localized,
       text: {
-        ru: 'Создаём отказоустойчивые решения, где нагрузку выдерживает не только инфраструктура, но и заказчик.',
-        en: 'We build services, queues, and storage systems that scale horizontally — right alongside maintenance costs and unexpected complications.',
+        ru: 'Строим сервисы, очереди и хранилища, которые растут горизонтально вместе со стоимостью поддержки и количеством неожиданных сложностей.',
+        en: 'We build services, queues and storage that scale horizontally — along with maintenance costs and the number of unexpected complications.',
       } as Localized,
     },
     {
       title: { ru: 'Безопасность', en: 'Security' } as Localized,
       text: {
-        ru: 'Помогаем выстраивать защиту на всех уровнях, чтобы к вашим данным не получили доступ посторонние. К вашим деньгам — уже поздно.',
-        en: 'We identify risks, document them in impressive detail, and carefully turn every potential vulnerability into a separate billable phase.',
+        ru: 'Находим риски, подробно их описываем и бережно превращаем каждую потенциальную уязвимость в отдельный этап работ.',
+        en: 'We find risks, describe them in detail and carefully turn every potential vulnerability into a separate phase of work.',
       } as Localized,
     },
     {
       title: { ru: 'Внутренние инструменты', en: 'Internal tools' } as Localized,
       text: {
-        ru: 'Собираем сервисы и платформы для внутренних команд, которые делают процессы сложнее, но зато выглядят очень профессионально.',
-        en: 'We build dashboards, admin panels, and CI/CD pipelines that promise to accelerate your team — after a substantial investment and a few months of implementation.',
+        ru: 'Создаём панели, админки и CI/CD-процессы, которые обещают ускорить команду, но сначала требуют внушительных вложений и пары месяцев внедрения.',
+        en: 'We build dashboards, admin panels and CI/CD pipelines that promise to speed up your team, but first require a substantial investment and a couple of months of rollout.',
       } as Localized,
     },
     {
       title: { ru: 'AI-инженерия', en: 'AI engineering' } as Localized,
       text: {
-        ru: 'Интегрируем AI в продукты и процессы так, чтобы даже самые обычные задачи можно было продавать как технологический прорыв.',
-        en: 'We design LLM pipelines, RAG systems, and automation with plenty of magic, moderate usefulness, and truly innovative invoices.',
+        ru: 'Проектируем LLM-пайплайны, RAG и автоматизацию так, чтобы магии было много, пользы — умеренно, а счёт выглядел по-настоящему инновационно.',
+        en: 'We design LLM pipelines, RAG and automation so that there is plenty of magic, a moderate amount of usefulness, and a truly innovative invoice.',
       } as Localized,
     },
   ],
