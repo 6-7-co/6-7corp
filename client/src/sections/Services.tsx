@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Reveal, SectionHeading, Stagger, StaggerItem } from '../components/Reveal';
 import { useI18n } from '../i18n';
 import { SERVICES } from '../content';
@@ -49,12 +50,12 @@ export function Services() {
                 en: 'Need design only, engineering only, or the whole thing — we assemble the team around the task.',
               })}
             </p>
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="shrink-0 rounded-full border border-line-strong px-5 py-2.5 text-[13px] font-semibold text-fg transition-colors hover:bg-surface-soft"
             >
               {t('nav.cta')}
-            </a>
+            </Link>
           </div>
         </Reveal>
       </div>

@@ -65,7 +65,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-0.5 lg:flex">
           {LINKS.map((l) => (
             <Link
               key={l.section}
@@ -96,7 +96,7 @@ export function Navbar() {
             {t('nav.cta')}
           </Link>
           <button
-            className="grid h-10 w-10 place-items-center rounded-full border border-line text-fg transition-colors hover:bg-surface-soft md:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-line text-fg transition-colors hover:bg-surface-soft lg:hidden"
             onClick={() => setOpen((o) => !o)}
             aria-label="Меню"
             aria-expanded={open}
@@ -129,7 +129,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="glass mx-auto mt-2 max-w-6xl overflow-hidden rounded-[26px] p-2 md:hidden"
+            className="glass mx-auto mt-2 max-w-6xl overflow-hidden rounded-[26px] p-2 lg:hidden"
           >
             {LINKS.map((l) => (
               <Link
