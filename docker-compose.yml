@@ -1,0 +1,24 @@
+# 6-7 Corporation — single-process production stack.
+# The app serves the built client + API + uploads from one Fastify process.
+# SQLite is file-based, so data lives on bind-mounted volumes (no DB service).
+
+services:
+  app:
+    build: .
+    image: 6-7corp:latest
+    container_name: 6-7corp-app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3001
+    volumes:
+      - ./server/data:/app/server/data      # SQLite database (persisted)
+      - ./server/uploads:/app/server/uploads  # uploaded media (persisted)
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
