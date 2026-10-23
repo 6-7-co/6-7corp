@@ -1,10 +1,15 @@
 import { Reveal } from '../components/Reveal';
 import { ContactForm } from '../components/ContactForm';
 import { useI18n } from '../i18n';
+import { useContent } from '../context/ContentContext';
+import { pickPair } from '../lib/localized';
 import { CONTACT } from '../content';
 
 export function Contact() {
-  const { pick } = useI18n();
+  const { pick, lang } = useI18n();
+  const { settings } = useContent();
+  const email = settings.email || 'hello@6-7corp.com';
+  const location = pickPair(lang, settings.location_ru, settings.location_en) || pick(CONTACT.location);
 
   return (
     <div className="relative pb-24 pt-32 sm:pt-40">
@@ -25,11 +30,11 @@ export function Contact() {
         </Reveal>
         <Reveal delay={0.2}>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
-            <a href="mailto:hello@6-7corp.com" className="link-soft">
-              hello@6-7corp.com
+            <a href={`mailto:${email}`} className="link-soft">
+              {email}
             </a>
             <span className="tick" />
-            <span>{pick(CONTACT.location)}</span>
+            <span>{location}</span>
           </div>
         </Reveal>
       </div>

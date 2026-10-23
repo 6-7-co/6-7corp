@@ -2,7 +2,7 @@
   "name": "6-7corp",
   "version": "1.0.0",
   "private": true,
-  "description": "6-7 Corporation — animated black & white corporate website with admin CMS",
+  "description": "6-7 Corporation \u2014 animated black & white corporate website with admin CMS",
   "workspaces": [
     "client",
     "server"
@@ -13,7 +13,8 @@
     "dev": "npm -w client run dev",
     "build:client": "npm -w client run build",
     "start:server": "npm -w server run start",
-    "seed": "npm -w server run seed"
+    "seed": "npm -w server run seed",
+    "seed:dump": "npm -w server run seed:dump"
   },
   "engines": {
     "node": ">=22.5.0"

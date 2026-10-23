@@ -41,9 +41,65 @@ pastel statistics card — rather than glitchy or busy.
   - Write journal posts in **Markdown** with live preview + image uploads
   - Add / edit / delete **projects** (cover, client, year, tags, link, body)
   - Manage **team** members (photo, role, bio, socials, ordering)
-  - Edit **company settings**
+  - Edit all **site content** — company info, hero copy, email, location,
+    Telegram/GitHub links, the **client list** and the **stats card**
+    (RU/EN with one-click machine translation)
   - Read / delete **contact messages** (with translations)
   - **Media library** to browse, copy URLs and delete uploads
+
+## Editing content
+
+Everything a non-developer is likely to change lives in the admin panel →
+**Настройки** (`/studio-6-7/settings`):
+
+| Block | What it controls |
+|-------|------------------|
+| Компания | company name, email, tagline, description |
+| Первый экран | hero eyebrow, three headline lines, description, "trusted by" label |
+| Контакты | location, Telegram link, GitHub link |
+| Клиенты и партнёры | the client wordmarks under the hero |
+| Цифры на главной | the 3-number card under the hero |
+
+Every text field has two slots (RU / EN). Write in one language and press the
+`⇄ EN` / `⇄ RU` button — the other one is filled by Google Translate. Nothing
+needs to be written twice.
+
+Content is stored in SQLite and served via `GET /api/settings`, so edits appear
+on the site immediately after saving — no rebuild, no deploy.
+
+The card under the hero is styled by `.stat-card` in `client/src/index.css`;
+its two soft glows are the `--card-glow-a` / `--card-glow-b` CSS variables.
+
+## Seeding content (`seed-data.json`)
+
+`server/src/seed-data.json` is the baseline content applied by `npm run seed`
+on a new machine or a fresh database. It contains settings, posts, projects and
+team members — never admins, messages or secrets.
+
+After editing content in the admin panel, export your local database back into
+that file so everyone else (and production) gets your real content:
+
+```bash
+npm run seed:dump            # writes server/src/seed-data.json from server/data/app.db
+git add server/src/seed-data.json && git commit -m "Update seed content"
+```
+
+Applying it:
+
+```bash
+npm run seed                 # fresh DB only — skips silently if content already exists
+SEED_FORCE=1 npm run seed    # overwrite settings + upsert content in an existing DB
+SEED_RESET=1 npm run seed    # wipe posts/projects/team first, then import the file
+```
+
+`npm run seed` is safe by default: if the database already contains posts,
+projects, team members or settings (i.e. you have edited content in the admin
+panel), it only refreshes the admin password and leaves your content alone.
+Nothing is ever deleted without `SEED_RESET=1`.
+
+Matching rules: posts and projects by `slug`, team members by `name`. Settings
+are overwritten by the file. `SEED_RESET=1` is what you want when the database
+still holds old demo content.
 
 ## Security posture
 
@@ -63,7 +119,7 @@ pastel statistics card — rather than glitchy or busy.
 
 ```bash
 npm install          # installs client + server workspaces
-npm run seed         # create admin + sample content (idempotent)
+npm run seed         # create admin + apply content from server/src/seed-data.json
 npm run dev:server   # API on http://localhost:3001
 npm run dev:client   # site on http://localhost:5173 (proxies /api + /uploads)
 ```

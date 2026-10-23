@@ -1,0 +1,103 @@
+{
+  "settings": {
+    "clients": "[\"northwind\", \"atlas\", \"waveform\", \"MONO\", \"kite\", \"STACK\"]",
+    "company_name": "6-7 Corporation",
+    "description": "6-7 Corporation — студия продуктовой разработки: интерфейсы, распределённые системы и безопасность для команд, которым важно качество.",
+    "description_en": "6-7 Corporation is a product engineering studio: interfaces, distributed systems and security for teams that care about craft.",
+    "description_ru": "6-7 Corporation — студия продуктовой разработки: интерфейсы, распределённые системы и безопасность для команд, которым важно качество.",
+    "email": "hello@6-7corp.com",
+    "established": "2019",
+    "github": "https://github.com/6-7-co",
+    "hero_description_en": "We design and ship digital products: interfaces, web platforms, distributed systems and security. No noise — just work that holds up.",
+    "hero_description_ru": "Проектируем и запускаем цифровые продукты: дизайн, веб-платформы, распределённые системы и безопасность. Без лишнего шума — только работающий результат.",
+    "hero_eyebrow_en": "Product engineering studio",
+    "hero_eyebrow_ru": "Студия продуктовой разработки",
+    "hero_line1_en": "Complex",
+    "hero_line1_ru": "Сложное",
+    "hero_line2_en": "made",
+    "hero_line2_ru": "делаем",
+    "hero_line3_en": "simple",
+    "hero_line3_ru": "простым",
+    "hero_trusted_en": "Teams that ship with us",
+    "hero_trusted_ru": "С нами запускают продукты команды из",
+    "locale_default": "ru",
+    "location_en": "Stockholm · remote",
+    "location_ru": "Стокгольм · удалённо",
+    "stats": "[{\"value\": \"150+\", \"label_ru\": \"запущенных продуктов\", \"label_en\": \"products shipped\"}, {\"value\": \"12\", \"label_ru\": \"лет в разработке\", \"label_en\": \"years building\"}, {\"value\": \"99,9%\", \"label_ru\": \"аптайм сервисов\", \"label_en\": \"service uptime\"}]",
+    "tagline": "Цифровые продукты, которые работают.",
+    "tagline_en": "Digital products that hold up",
+    "tagline_ru": "Цифровые продукты, которые работают",
+    "telegram": ""
+  },
+  "posts": [
+    {
+      "title": "Почему мы берёмся за сложное",
+      "slug": "why-we-take-hard-problems",
+      "excerpt": "Короткая заметка о скоупе, скорости и безопасности на масштабе.",
+      "body_md": "## С чего начинается бриф\n\nКаждый продукт начинается с вопроса, который звучит *слишком сложно*.\n\nМы считаем это не предупреждением, а точкой входа. Задача — снять с проблемы\nвсё лишнее, оставить основу и сделать эту основу хорошо.\n\n### На что мы смотрим\n\n- **Ясность** — один очевидный путь вместо тысячи возможных.\n- **Устойчивость** — системы деградируют мягко, а не падают громко.\n- **Безопасность** — модель угроз пишется до первой строки кода.\n\n> Мы не отдаём ничего, что не поставили бы перед своими пользователями.",
+      "cover": null,
+      "published": true
+    }
+  ],
+  "projects": [
+    {
+      "title": "Helio Pay",
+      "slug": "helio-pay",
+      "client": "Helio",
+      "year": "2024",
+      "tags": "Payments, Fraud, Rust",
+      "excerpt": "Платёжный шлюз с откликом 12 мс и адаптивным антифродом.",
+      "body_md": "## Что сделали\n\nПереписали авторизационный пайплайн на Rust и снизили p99 с\n**480 мс до 12 мс**, добавив адаптивный скоринг мошенничества.\n\n### Стек\n\n- Rust · Tokio\n- PostgreSQL · Redis\n- Собственный runtime для скоринга",
+      "cover": null,
+      "link": "https://example.com/helio",
+      "order_idx": 1
+    },
+    {
+      "title": "Northwind OS",
+      "slug": "northwind-os",
+      "client": "Northwind",
+      "year": "2023",
+      "tags": "Platform, DevTools, TS",
+      "excerpt": "Платформа для разработчиков: 40 000 сборок в сутки.",
+      "body_md": "## Что сделали\n\nСпроектировали платформу оркестрации сборок, которая держит\n**40 000 сборок в сутки** за счёт детерминированного кеша.\n\n### Стек\n\n- TypeScript · React\n- Go-оркестратор\n- Объектное хранилище",
+      "cover": null,
+      "link": "https://example.com/northwind",
+      "order_idx": 2
+    }
+  ],
+  "team": [
+    {
+      "name": "Ada Voss",
+      "role": "Основатель и CTO",
+      "bio": "Отвечает за техническое направление. 15 лет разработки на масштабе.",
+      "photo": null,
+      "socials": {
+        "website": "https://example.com",
+        "github": "https://github.com/ada"
+      },
+      "order_idx": 1
+    },
+    {
+      "name": "Kenji Mori",
+      "role": "Руководитель безопасности",
+      "bio": "Прогоняет red team всё до релиза. Чемпион CTF.",
+      "photo": null,
+      "socials": {
+        "github": "https://github.com/kenji",
+        "telegram": "https://t.me/kenji"
+      },
+      "order_idx": 2
+    },
+    {
+      "name": "Lena Ortiz",
+      "role": "Директор по дизайну",
+      "bio": "Превращает сложные системы в спокойные интерфейсы.",
+      "photo": null,
+      "socials": {
+        "x": "https://x.com/lena",
+        "website": "https://example.com/lena"
+      },
+      "order_idx": 3
+    }
+  ]
+}

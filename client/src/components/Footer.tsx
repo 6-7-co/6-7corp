@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { useAuth } from '../context/AuthContext';
+import { useContent } from '../context/ContentContext';
+import { pickPair } from '../lib/localized';
 import { ADMIN_URL } from '../lib/adminRoute';
 import { FOOTER } from '../content';
 
@@ -12,8 +14,12 @@ const NAV = [
 ];
 
 export function Footer() {
-  const { t, pick } = useI18n();
+  const { t, pick, lang } = useI18n();
   const { admin } = useAuth();
+  const { settings } = useContent();
+
+  const email = settings.email || 'hello@6-7corp.com';
+  const location = pickPair(lang, settings.location_ru, settings.location_en);
 
   function go(section: string) {
     if (window.location.pathname === '/') {
@@ -37,8 +43,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-muted">{pick(FOOTER.tagline)}</p>
-            <a href="mailto:hello@6-7corp.com" className="link-soft mt-5 inline-block text-[14px]">
-              hello@6-7corp.com
+            <a href={`mailto:${email}`} className="link-soft mt-5 inline-block text-[14px]">
+              {email}
             </a>
           </div>
 
@@ -68,26 +74,30 @@ export function Footer() {
               {t('footer.contacts')}
             </p>
             <ul className="mt-4 space-y-2.5">
-              <li>
-                <a
-                  href="https://t.me/"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[14px] text-muted transition-colors hover:text-fg"
-                >
-                  Telegram
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/6-7-co"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[14px] text-muted transition-colors hover:text-fg"
-                >
-                  GitHub
-                </a>
-              </li>
+              {settings.telegram && (
+                <li>
+                  <a
+                    href={settings.telegram}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-[14px] text-muted transition-colors hover:text-fg"
+                  >
+                    Telegram
+                  </a>
+                </li>
+              )}
+              {settings.github && (
+                <li>
+                  <a
+                    href={settings.github}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-[14px] text-muted transition-colors hover:text-fg"
+                  >
+                    GitHub
+                  </a>
+                </li>
+              )}
               <li>
                 <Link to="/contact" className="text-[14px] text-muted transition-colors hover:text-fg">
                   {t('nav.contact')}
@@ -102,7 +112,7 @@ export function Footer() {
             © {new Date().getFullYear()} 6-7 Corporation. {t('footer.rights')}
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-[12.5px] text-muted/50">Stockholm · Remote</span>
+            <span className="text-[12.5px] text-muted/50">{location}</span>
             {admin && (
               <Link to={ADMIN_URL} className="text-[12.5px] text-muted transition-colors hover:text-fg">
                 {t('footer.admin')}
