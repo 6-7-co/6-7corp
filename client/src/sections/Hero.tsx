@@ -54,16 +54,6 @@ export function Hero() {
       <OrganicLines />
 
       <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-8">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="flex items-center gap-2.5 text-[12.5px] font-medium tracking-[0.02em] text-muted"
-        >
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--accent-a)' }} />
-          {txt(settings.hero_eyebrow_ru, settings.hero_eyebrow_en, HERO.eyebrow)}
-        </motion.p>
-
         <div className="mt-7 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
           <motion.h1
             style={{ y: yType, opacity: fade }}

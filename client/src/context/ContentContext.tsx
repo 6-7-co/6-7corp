@@ -83,8 +83,8 @@ const ContentContext = createContext<Content | null>(null);
 
 const FALLBACK_SETTINGS: Settings = {
   company_name: '6-7 Corporation',
-  email: 'hello@6-7corp.com',
-  established: '2019',
+  email: 'sotrudnichestvo@6-7mail.ru',
+  established: '2026',
   locale_default: 'ru',
   telegram: '',
   github: 'https://github.com/6-7-co',
@@ -94,8 +94,8 @@ const FALLBACK_SETTINGS: Settings = {
   tagline_en: '',
   description_ru: '',
   description_en: '',
-  location_ru: 'Стокгольм · удалённо',
-  location_en: 'Stockholm · remote',
+  location_ru: 'Россия · удалённо',
+  location_en: 'Russia · remote',
   hero_eyebrow_ru: '',
   hero_eyebrow_en: '',
   hero_line1_ru: '',

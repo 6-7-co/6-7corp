@@ -36,8 +36,7 @@ export function About() {
               className="surface card-hover p-7"
             >
               <div className="flex items-baseline justify-between">
-                <span className="font-mono text-[11px] tracking-[0.15em] text-muted/70">{p.n}</span>
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--accent-a)' }} />
+                <span className="font-mono text-[15px] tracking-[0.15em] text-muted/70">{p.n}</span>
               </div>
               <h3 className="mt-8 font-display text-[19px] font-semibold tracking-[-0.02em]">{pick(p.title)}</h3>
               <p className="mt-2.5 text-[14px] leading-relaxed text-muted">{pick(p.text)}</p>

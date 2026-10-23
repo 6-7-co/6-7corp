@@ -6,16 +6,16 @@ import type { Localized } from './i18n';
  */
 
 export const HERO = {
-  line1: { ru: 'Сложное', en: 'Complex' } as Localized,
-  line2: { ru: 'делаем', en: 'made' } as Localized,
-  line3: { ru: 'простым', en: 'simple' } as Localized,
+  line1: { ru: 'Берёмся за всё.', en: 'Complex' } as Localized,
+  line2: { ru: 'отвечаем', en: 'made' } as Localized,
+  line3: { ru: 'ни за что', en: 'simple' } as Localized,
   eyebrow: {
     ru: 'Студия продуктовой разработки',
     en: 'Product engineering studio',
   } as Localized,
   description: {
-    ru: 'Проектируем и запускаем цифровые продукты: дизайн, веб-платформы, распределённые системы и безопасность. Без лишнего шума — только работающий результат.',
-    en: 'We design and ship digital products: interfaces, web platforms, distributed systems and security. No noise — just work that holds up.',
+    ru: 'Мы делаем вид, что работаем. Вы делаете вид, что довольны',
+    en: 'We pretend to work. You pretend to be happy.',
   } as Localized,
   ctaPrimary: { ru: 'Обсудить проект', en: 'Start a project' } as Localized,
   ctaSecondary: { ru: 'Смотреть работы', en: 'See our work' } as Localized,
@@ -34,36 +34,36 @@ export const HERO = {
 export const ABOUT = {
   eyebrow: { ru: 'О студии', en: 'About' } as Localized,
   title: {
-    ru: 'Небольшая команда, которая берётся за сложные задачи и доводит их до результата.',
-    en: 'A small team that takes on hard problems and carries them to the finish.',
+    ru: 'Ваши ожидания — наши проблемы. Ваши деньги — наши возможности',
+    en: 'Your expectations are our problems. Your money is our opportunity.',
   } as Localized,
   body: {
-    ru: 'Мы работаем короткими циклами, показываем промежуточные результаты каждую неделю и не прячемся за презентациями. Дизайн, разработка и безопасность живут в одной команде — поэтому продукт получается цельным.',
-    en: 'We work in short cycles, show progress every week and stay close to the details. Design, engineering and security sit in one team, so the product stays coherent.',
+    ru: 'Мы выстраиваем рабочие процессы таким образом, чтобы даже самые простые задачи требовали максимального бюджета. Наша команда умеет превращать небольшие правки в полноценные проекты, а очевидные решения — в многоэтапные согласования. Мы ценим ваше время, поэтому предпочитаем тратить исключительно своё, предварительно включив его в итоговую стоимость.',
+    en: 'We set up workflows in such a way that even the simplest tasks require the maximum budget. Our team knows how to turn small edits into full-fledged projects, and obvious solutions into multi-stage approvals. We value your time, so we prefer to spend exclusively our own, after first including it in the final cost.',
   } as Localized,
   principles: [
     {
       n: '01',
       title: { ru: 'Ясность', en: 'Clarity' } as Localized,
       text: {
-        ru: 'Один очевидный путь вместо тысячи возможных.',
-        en: 'One obvious path through a thousand possible ones.',
+        ru: 'Мы сразу называем стоимость проекта. За что именно вы платите — выясним в процессе.',
+        en: 'We give the project cost upfront. We\'ll figure out exactly what you\'re paying for along the way.',
       } as Localized,
     },
     {
       n: '02',
       title: { ru: 'Устойчивость', en: 'Resilience' } as Localized,
       text: {
-        ru: 'Системы, которые деградируют мягко, а не громко.',
-        en: 'Systems that degrade gracefully, not loudly.',
+        ru: 'Разработка может стоять на месте, сроки могут сдвигаться. Но стоимость наших услуг стабильно растёт.',
+        en: 'Development may stall, deadlines may get pushed back. But the cost of our services keeps going up steadily.',
       } as Localized,
     },
     {
       n: '03',
       title: { ru: 'Безопасность', en: 'Security' } as Localized,
       text: {
-        ru: 'Модель угроз пишется до первой строки кода.',
-        en: 'Threat models written before the first line of code.',
+        ru: 'Ваши деньги находятся под надёжной защитой. Особенно от любых попыток возврата.',
+        en: 'Your money is under reliable protection. Especially from any attempts of getting it back.',
       } as Localized,
     },
   ],
@@ -73,50 +73,50 @@ export const SERVICES = {
   eyebrow: { ru: 'Направления', en: 'Capabilities' } as Localized,
   title: { ru: 'Чем мы можем помочь', en: 'What we do' } as Localized,
   subtitle: {
-    ru: 'Полный цикл: от исследования и дизайна до запуска и поддержки.',
-    en: 'Full cycle: from research and design to launch and care.',
+    ru: 'Полный цикл: от красивых обещаний и уверенного старта до затянутых сроков и убедительных объяснений.',
+    en: 'Full-service delivery: from polished promises and a confident kickoff to missed deadlines and convincing explanations.',
   } as Localized,
   items: [
     {
       title: { ru: 'Продуктовый дизайн', en: 'Product design' } as Localized,
       text: {
-        ru: 'Исследования, интерфейсы и дизайн-системы, которые превращают сложные сценарии в спокойные экраны.',
-        en: 'Research, interfaces and design systems that turn dense flows into calm screens.',
+        ru: 'Проектируем понятные интерфейсы и пользовательские сценарии, которые помогают клиенту быстрее понять, за что именно он заплатил.',
+        en: 'We research, discuss, and endlessly rethink interfaces to make even the simplest solution look like expensive strategic work.',
       } as Localized,
     },
     {
       title: { ru: 'Веб-разработка', en: 'Web engineering' } as Localized,
       text: {
-        ru: 'React, TypeScript и понятные бюджеты производительности с первого коммита.',
-        en: 'React, TypeScript and clear performance budgets from the first commit.',
+        ru: 'Разрабатываем современные веб-продукты на надёжном стеке — с гибкими сроками, гибкими оценками и ещё более гибким итоговым бюджетом.',
+        en: 'We build modern web products on a reliable tech stack — with flexible timelines, flexible estimates, and even more flexible final budgets.',
       } as Localized,
     },
     {
       title: { ru: 'Распределённые системы', en: 'Distributed systems' } as Localized,
       text: {
-        ru: 'Сервисы, очереди и данные, которые растут горизонтально и не разваливаются.',
-        en: 'Services, queues and data platforms built to scale horizontally.',
+        ru: 'Создаём отказоустойчивые решения, где нагрузку выдерживает не только инфраструктура, но и заказчик.',
+        en: 'We build services, queues, and storage systems that scale horizontally — right alongside maintenance costs and unexpected complications.',
       } as Localized,
     },
     {
       title: { ru: 'Безопасность', en: 'Security' } as Localized,
       text: {
-        ru: 'Моделирование угроз, аудит, укрепление инфраструктуры и zero-trust.',
-        en: 'Threat modelling, audits, hardening and zero-trust architecture.',
+        ru: 'Помогаем выстраивать защиту на всех уровнях, чтобы к вашим данным не получили доступ посторонние. К вашим деньгам — уже поздно.',
+        en: 'We identify risks, document them in impressive detail, and carefully turn every potential vulnerability into a separate billable phase.',
       } as Localized,
     },
     {
       title: { ru: 'Внутренние инструменты', en: 'Internal tools' } as Localized,
       text: {
-        ru: 'CI/CD, платформы сборки и админки, которые ускоряют команду.',
-        en: 'CI/CD, build platforms and admin panels that speed teams up.',
+        ru: 'Собираем сервисы и платформы для внутренних команд, которые делают процессы сложнее, но зато выглядят очень профессионально.',
+        en: 'We build dashboards, admin panels, and CI/CD pipelines that promise to accelerate your team — after a substantial investment and a few months of implementation.',
       } as Localized,
     },
     {
       title: { ru: 'AI-инженерия', en: 'AI engineering' } as Localized,
       text: {
-        ru: 'LLM-пайплайны, RAG и оценка качества — с понятными ограничениями.',
-        en: 'LLM pipelines, RAG and evaluation — shipped with guardrails.',
+        ru: 'Интегрируем AI в продукты и процессы так, чтобы даже самые обычные задачи можно было продавать как технологический прорыв.',
+        en: 'We design LLM pipelines, RAG systems, and automation with plenty of magic, moderate usefulness, and truly innovative invoices.',
       } as Localized,
     },
   ],
@@ -124,7 +124,7 @@ export const SERVICES = {
 
 export const WORK = {
   eyebrow: { ru: 'Избранное', en: 'Selected work' } as Localized,
-  title: { ru: 'Проекты, которые уже в проде', en: 'Projects that shipped' } as Localized,
+  title: { ru: 'Проекты, которые уже оплачены', en: 'Projects that shipped' } as Localized,
   subtitle: {
     ru: 'Несколько историй о том, как продукт собирается из идеи и ограничений.',
     en: 'A few stories about turning an idea and its constraints into a product.',
@@ -133,9 +133,9 @@ export const WORK = {
 
 export const TEAM = {
   eyebrow: { ru: 'Команда', en: 'People' } as Localized,
-  title: { ru: 'Те, кто делает', en: 'The makers' } as Localized,
+  title: { ru: 'Те, кто жаждят наживы', en: 'The makers' } as Localized,
   subtitle: {
-    ru: 'Маленькая команда, в которой каждый отвечает за результат.',
+    ru: 'Маленькая команда, в которой каждый отвечает за результат, но не за слова.',
     en: 'A small team where everyone owns the outcome.',
   } as Localized,
 };
@@ -144,7 +144,7 @@ export const JOURNAL = {
   eyebrow: { ru: 'Журнал', en: 'Journal' } as Localized,
   title: { ru: 'Заметки из студии', en: 'Notes from the studio' } as Localized,
   subtitle: {
-    ru: 'О процессах, инженерных решениях и дизайне без воды.',
+    ru: 'О процессах, инженерных решениях и дизайне.',
     en: 'On process, engineering decisions and design without fluff.',
   } as Localized,
   empty: { ru: 'Первый текст уже готовится.', en: 'The first note is on its way.' } as Localized,
@@ -153,7 +153,7 @@ export const JOURNAL = {
 export const CONTACT = {
   eyebrow: { ru: 'Контакты', en: 'Contact' } as Localized,
   title: {
-    ru: 'Расскажите, что нужно сделать',
+    ru: 'Спрашивайте, всё пообещаем.',
     en: 'Tell us what needs to be built',
   } as Localized,
   subtitle: {
@@ -169,7 +169,7 @@ export const CONTACT = {
 
 export const FOOTER = {
   tagline: {
-    ru: 'Проектируем и запускаем цифровые продукты, которые держат нагрузку и внимание.',
+    ru: 'Проектируем и запускаем цифровые продукты, которые приносят деньги. Нам.',
     en: 'We design and ship digital products that hold up under load and attention.',
   } as Localized,
 };
