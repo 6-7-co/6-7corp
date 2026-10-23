@@ -1,0 +1,92 @@
+{
+  "settings": {
+    "clients": "[\"MerelyUI\"]",
+    "company_name": "6-7 Corporation",
+    "description": "6-7 Corporation - Делаем дорого. Качество обсуждается отдельно. Современные технологии. Бизнес. B2B. AI. SAAS.",
+    "description_en": "6-7 Corporation - We make it expensive. Quality is discussed separately. Modern technologies. Business. B2B. AI. SAAS.",
+    "description_ru": "6-7 Corporation - Делаем дорого. Качество обсуждается отдельно. Современные технологии. Бизнес. B2B. AI. SAAS.",
+    "email": "sotrudnichestvo@6-7mail.ru",
+    "established": "2026",
+    "github": "",
+    "hero_description_en": "",
+    "hero_description_ru": "",
+    "hero_eyebrow_en": "Your money deserves better. For example, us",
+    "hero_eyebrow_ru": "Ваши деньги заслуживают лучшего. Например, мы",
+    "hero_line1_en": "",
+    "hero_line1_ru": "",
+    "hero_line2_en": "",
+    "hero_line2_ru": "",
+    "hero_line3_en": "",
+    "hero_line3_ru": "",
+    "hero_trusted_en": "",
+    "hero_trusted_ru": "",
+    "locale_default": "ru",
+    "location_en": "",
+    "location_ru": "",
+    "stats": "[]",
+    "tagline": "Ваши ожидания - наши проблемы. Ваши деньги - наши возможности",
+    "tagline_en": "Your expectations are our problems. Your money is our opportunity",
+    "tagline_ru": "Ваши ожидания - наши проблемы. Ваши деньги - наши возможности",
+    "telegram": ""
+  },
+  "posts": [
+    {
+      "title": "Почему мы берёмся за сложное",
+      "slug": "why-we-take-hard-problems",
+      "excerpt": "Короткая заметка о скоупе, скорости и безопасности на масштабе.",
+      "body_md": "# Говно\nаааа дерьмо жрать говняшки говяшки суки хуйняяя шлюха",
+      "cover": "/uploads/05a8c2uFexUqtYFoO2EoOA.jpg",
+      "published": true
+    }
+  ],
+  "projects": [
+    {
+      "title": "PatapimPay",
+      "slug": "helio-pay",
+      "client": "Patapim",
+      "year": "2025",
+      "tags": "Rust, Mobile Payment Services, Chapik",
+      "excerpt": "Мобильное приложение для платежей",
+      "body_md": "# О чем проект\nЭтот проект - новейшие технологии собранные воедино для нового АХУЕННОГО мобильного приложения PatapimPay",
+      "cover": "/uploads/zy--chrz3vd8cb0WEOMsGw.jpg",
+      "link": "https://poshel-nahui.com",
+      "order_idx": 1
+    }
+  ],
+  "team": [
+    {
+      "name": "Данил Зобков",
+      "role": "CEO",
+      "bio": "Генеральный директор компании 6-7 Co. \n10 лет опыта разработки, 1 год опыта вайбкодинга.",
+      "photo": "/uploads/up0m7r9ZZrrc6IwFG2gJcA.png",
+      "socials": {
+        "website": "https://6-7corp.ru",
+        "github": "https://github.com/ovelwe"
+      },
+      "order_idx": 1
+    },
+    {
+      "name": "Александр Макаров",
+      "role": "CEO",
+      "bio": "Генеральный директор компании 6-7 Co.\n10 лет опыта разработки, 1 год опыта работы с Ozon Warehouse.",
+      "photo": "/uploads/Sh18THFPbMwJNsxk56kxcQ.jpg",
+      "socials": {
+        "website": "https://6-7corp.ru",
+        "github": "https://github.com/orgs/6-7-co/people/ihaventsleepforyears",
+        "telegram": ""
+      },
+      "order_idx": 2
+    },
+    {
+      "name": "Григорий Сабанов",
+      "role": "Креатор",
+      "bio": "Придумывает новые современные и крутые идеи.",
+      "photo": "/uploads/QrlgjcwnOu5bXmws6ez9Dg.jpg",
+      "socials": {
+        "website": "",
+        "x": ""
+      },
+      "order_idx": 3
+    }
+  ]
+}

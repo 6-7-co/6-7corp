@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Data & uploads (local runtime state)
+server/data/
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+uploads/*
+!uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Private notes (never committed)
+OPS.md
+
+# Editor / OS
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Generated Vercel functions (built by `npm run build:api`)
+api/*.js
+api/*.mjs
+.vercel

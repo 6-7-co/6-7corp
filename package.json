@@ -1,0 +1,32 @@
+{
+  "name": "6-7corp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "6-7 Corporation — bilingual corporate website with a private content area",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "npm -w client run dev",
+    "dev:server": "npm -w server run dev",
+    "dev": "npm -w client run dev",
+    "build:client": "npm -w client run build",
+    "build:api": "node scripts/build-api.mjs",
+    "build:vercel": "npm -w client run build && node scripts/build-api.mjs",
+    "start:server": "npm -w server run start",
+    "seed": "npm -w server run seed",
+    "seed:dump": "npm -w server run seed:dump",
+    "db:push": "npm -w server run db:push",
+    "db:import": "npm -w server run db:import",
+    "db:import:reset": "npm -w server run db:import -- --reset",
+    "admin:set": "npm -w server run admin:set",
+    "media:push": "npm -w server run media:push"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12"
+  }
+}
