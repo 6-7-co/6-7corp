@@ -34,3 +34,4 @@ OPS.md
 api/*.js
 api/*.mjs
 .vercel
+.env*
