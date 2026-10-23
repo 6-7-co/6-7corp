@@ -16,42 +16,44 @@ const memberSchema = z.object({
   name: z.string().min(1).max(80),
   role: z.string().max(80).default(''),
   bio: z.string().max(5000).default(''),
-  photo: z.string().max(300).nullable().optional(),
+  photo: z.string().max(500).nullable().optional(),
   socials: socialsSchema.default({}),
   orderIdx: z.number().int().default(0),
 });
 
 export function registerTeamRoutes(app: FastifyInstance) {
   app.get('/api/team', () =>
-    all<any[]>('SELECT id, name, role, bio, photo, socials, order_idx FROM team ORDER BY order_idx ASC, name ASC'),
+    all<any>('SELECT id, name, role, bio, photo, socials, order_idx FROM team ORDER BY order_idx ASC, name ASC'),
   );
 
-  app.post('/api/team', { preHandler: requireAuth }, (req, reply) => {
+  app.post('/api/team', { preHandler: requireAuth }, async (req, reply) => {
     const parsed = memberSchema.safeParse(req.body);
     if (!parsed.success) return reply.code(400).send({ error: 'invalid_input', issues: parsed.error.flatten() });
     const d = parsed.data;
-    run(
+    await run(
       `INSERT INTO team (name, role, bio, photo, socials, order_idx) VALUES (?, ?, ?, ?, ?, ?)`,
       d.name, d.role, sanitizeMarkdown(d.bio), d.photo ?? null, JSON.stringify(d.socials ?? {}), d.orderIdx,
     );
     return reply.code(201).send({ ok: true });
   });
 
-  app.put('/api/team/:id', { preHandler: requireAuth }, (req, reply) => {
+  app.put('/api/team/:id', { preHandler: requireAuth }, async (req, reply) => {
     const id = Number((req.params as any).id);
     const parsed = memberSchema.safeParse(req.body);
     if (!parsed.success) return reply.code(400).send({ error: 'invalid_input', issues: parsed.error.flatten() });
     const d = parsed.data;
-    if (!get('SELECT id FROM team WHERE id = ?', id)) return reply.code(404).send({ error: 'not_found' });
-    run(
+    if (!(await get('SELECT id FROM team WHERE id = ?', id))) {
+      return reply.code(404).send({ error: 'not_found' });
+    }
+    await run(
       `UPDATE team SET name=?, role=?, bio=?, photo=?, socials=?, order_idx=? WHERE id=?`,
       d.name, d.role, sanitizeMarkdown(d.bio), d.photo ?? null, JSON.stringify(d.socials ?? {}), d.orderIdx, id,
     );
     return { ok: true };
   });
 
-  app.delete('/api/team/:id', { preHandler: requireAuth }, (req, reply) => {
-    run('DELETE FROM team WHERE id = ?', Number((req.params as any).id));
+  app.delete('/api/team/:id', { preHandler: requireAuth }, async (req) => {
+    await run('DELETE FROM team WHERE id = ?', Number((req.params as any).id));
     return { ok: true };
   });
 }

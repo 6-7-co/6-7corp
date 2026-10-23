@@ -5,7 +5,7 @@ import {
   verifyToken,
   safeEqual,
 } from './security.js';
-import { get } from './db.js';
+import { get, NOW } from './db.js';
 
 declare module 'fastify' {
   interface FastifyRequest {
@@ -14,13 +14,15 @@ declare module 'fastify' {
 }
 
 /** Resolves the admin session from the auth cookie, if present. */
-export function attachAdmin(req: FastifyRequest) {
-  const token = req.cookies[AUTH_COOKIE];
+export async function attachAdmin(req: FastifyRequest): Promise<void> {
+  const token = req.cookies?.[AUTH_COOKIE];
   if (!token) return;
   const payload = verifyToken(token);
   if (!payload) return;
-  const row = get<{ id: number; username: string }>(
-    'SELECT a.id, a.username FROM admins a JOIN sessions s ON s.admin_id = a.id WHERE s.token = ? AND s.expires_at > datetime(\'now\')',
+  const row = await get<{ id: number; username: string }>(
+    `SELECT a.id, a.username FROM admins a
+     JOIN sessions s ON s.admin_id = a.id
+     WHERE s.token = ? AND s.expires_at > ${NOW}`,
     token,
   );
   if (row) req.admin = { id: row.id, username: row.username };
@@ -43,7 +45,7 @@ const MUTATING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
  */
 export async function requireCsrf(req: FastifyRequest, reply: FastifyReply): Promise<void> {
   if (!MUTATING.has(req.method)) return;
-  const cookie = req.cookies[CSRF_COOKIE];
+  const cookie = req.cookies?.[CSRF_COOKIE];
   const header = req.headers['x-csrf-token'];
   if (!cookie || !header || typeof header !== 'string' || !safeEqual(cookie, header)) {
     reply.code(403).send({ error: 'csrf_failed' });

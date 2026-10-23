@@ -86,8 +86,8 @@ function parseJson<T>(raw: string | undefined, fallback: T): T {
   }
 }
 
-function readSettings(): Record<string, unknown> {
-  const rows = all<{ key: string; value: string }>('SELECT key, value FROM settings');
+async function readSettings(): Promise<Record<string, unknown>> {
+  const rows = await all<{ key: string; value: string }>('SELECT key, value FROM settings');
   const map: Record<string, string> = {};
   for (const r of rows) map[r.key] = r.value;
 
@@ -104,10 +104,10 @@ function readSettings(): Record<string, unknown> {
 
 export function registerSettingsRoutes(app: FastifyInstance) {
   // Public: the site reads all of its editable copy from here.
-  app.get('/api/settings', () => readSettings());
+  app.get('/api/settings', async () => readSettings());
 
   // Admin: replace the whole settings blob.
-  app.put('/api/settings', { preHandler: requireAuth }, (req, reply) => {
+  app.put('/api/settings', { preHandler: requireAuth }, async (req, reply) => {
     const parsed = settingsSchema.safeParse(req.body);
     if (!parsed.success) {
       return reply.code(400).send({ error: 'invalid_input', issues: parsed.error.flatten() });
@@ -125,7 +125,7 @@ export function registerSettingsRoutes(app: FastifyInstance) {
     entries.push(['stats', JSON.stringify(data.stats)]);
 
     for (const [key, value] of entries) {
-      run(
+      await run(
         `INSERT INTO settings (key, value) VALUES (?, ?)
          ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
         key,

@@ -1,81 +1,67 @@
 /**
- * Export the current database content into `seed-data.json`.
+ * Exports the current database content into `server/src/seed-data.json`.
  *
- * Use it after you have edited content in the admin panel, so a fresh install
- * (or another machine) gets exactly your content instead of the demo data:
+ * Works against whichever database is configured, so you can dump your local
+ * SQLite content and import it into Neon/Postgres:
  *
- *   npm run seed:dump                 # writes server/src/seed-data.json
- *   SEED_RESET=1 npm run seed         # apply it to the current database
+ *   npm run seed:dump                                   # local SQLite → file
+ *   npm run db:import                                   # file → DATABASE_URL
+ *   DATABASE_URL=postgres://… npm run seed:dump         # Neon → file (backup)
  *
- * Admins and contact messages are intentionally excluded (no secrets, no PII).
+ * Admins and contact messages are intentionally excluded.
  */
-import { writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { all, db } from './lib/db.js';
+import { closeDb, DATABASE_URL, USING_PG } from './lib/db.js';
+import { dumpSeed, loadSeed, SEED_FILE } from './lib/seed-content.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT = resolve(__dirname, 'seed-data.json');
+const FORCE = process.argv.includes('--force');
 
-function parseSocials(raw: string): Record<string, string> {
+async function main() {
+  const existing = loadSeed();
+  const existingCount =
+    Object.keys(existing.settings ?? {}).length +
+    (existing.posts?.length ?? 0) +
+    (existing.projects?.length ?? 0) +
+    (existing.team?.length ?? 0);
+
+  const data = await dumpSeed();
+  const newCount =
+    Object.keys(data.settings ?? {}).length +
+    (data.posts?.length ?? 0) +
+    (data.projects?.length ?? 0) +
+    (data.team?.length ?? 0);
+
+  // Never silently wipe a good seed file with an empty database.
+  if (newCount === 0 && existingCount > 0 && !FORCE) {
+    const { writeFileSync } = await import('node:fs');
+    writeFileSync(SEED_FILE, `${JSON.stringify(existing, null, 2)}\n`, 'utf8');
+    console.log(
+      'Database is empty, so seed-data.json was left unchanged.\n' +
+        'Point DATABASE_URL or DATA_DIR at the database that has your content, or pass --force.',
+    );
+    await closeDb();
+    return;
+  }
+
+  console.log(`Wrote ${SEED_FILE}`);
+  console.log(`  source: ${USING_PG ? 'postgres' : 'sqlite'}${DATABASE_URL && USING_PG ? ` (${mask(DATABASE_URL)})` : ''}`);
+  console.log(
+    `  settings: ${Object.keys(data.settings ?? {}).length}, posts: ${data.posts?.length ?? 0}, ` +
+      `projects: ${data.projects?.length ?? 0}, team: ${data.team?.length ?? 0}`,
+  );
+  await closeDb();
+}
+
+function mask(url: string) {
   try {
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    const u = new URL(url);
+    return `${u.host}${u.pathname}`;
   } catch {
-    return {};
+    return 'postgres';
   }
 }
 
-const settingsRows = all<{ key: string; value: string }>('SELECT key, value FROM settings ORDER BY key');
-const settings: Record<string, string> = {};
-for (const row of settingsRows) settings[row.key] = row.value;
-
-const posts = all<any>(
-  `SELECT title, slug, excerpt, body_md, cover, published
-   FROM posts ORDER BY created_at ASC, id ASC`,
-).map((p) => ({
-  title: p.title,
-  slug: p.slug,
-  excerpt: p.excerpt,
-  body_md: p.body_md,
-  cover: p.cover,
-  published: Boolean(p.published),
-}));
-
-const projects = all<any>(
-  `SELECT title, slug, client, year, tags, excerpt, body_md, cover, link, order_idx
-   FROM projects ORDER BY order_idx ASC, id ASC`,
-).map((p) => ({
-  title: p.title,
-  slug: p.slug,
-  client: p.client,
-  year: p.year,
-  tags: p.tags,
-  excerpt: p.excerpt,
-  body_md: p.body_md,
-  cover: p.cover,
-  link: p.link,
-  order_idx: p.order_idx,
-}));
-
-const team = all<any>(
-  `SELECT name, role, bio, photo, socials, order_idx
-   FROM team ORDER BY order_idx ASC, id ASC`,
-).map((m) => ({
-  name: m.name,
-  role: m.role,
-  bio: m.bio,
-  photo: m.photo,
-  socials: parseSocials(m.socials ?? '{}'),
-  order_idx: m.order_idx,
-}));
-
-const data = { settings, posts, projects, team };
-writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-
-console.log(`Wrote ${OUT}`);
-console.log(
-  `  settings: ${Object.keys(settings).length}, posts: ${posts.length}, ` +
-    `projects: ${projects.length}, team: ${team.length}`,
-);
-db.close();
+main().catch(async (err) => {
+  console.error(err);
+  await closeDb();
+  process.exit(1);
+});
