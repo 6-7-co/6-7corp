@@ -4,7 +4,11 @@
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        # Hidden admin route. Change it to your own secret path.
+        VITE_ADMIN_PATH: ${VITE_ADMIN_PATH:-studio-6-7}
     image: 6-7corp:latest
     container_name: 6-7corp-app
     ports:

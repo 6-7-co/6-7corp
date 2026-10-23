@@ -10,12 +10,83 @@ import { makeTranslator } from './translate';
 
 export type Lang = 'en' | 'ru';
 
-export const LANGS: { id: Lang; label: string; flag: string }[] = [
-  { id: 'en', label: 'English', flag: 'EN' },
-  { id: 'ru', label: 'Русский', flag: 'RU' },
+export const LANGS: { id: Lang; label: string; short: string }[] = [
+  { id: 'ru', label: 'Русский', short: 'RU' },
+  { id: 'en', label: 'English', short: 'EN' },
 ];
 
 type Dict = Record<string, string>;
+
+const ru: Dict = {
+  'nav.services': 'Направления',
+  'nav.projects': 'Работы',
+  'nav.team': 'Команда',
+  'nav.journal': 'Журнал',
+  'nav.contact': 'Контакты',
+  'nav.cta': 'Обсудить проект',
+  'common.all': 'Все работы',
+  'common.readAll': 'Все записи',
+  'common.more': 'Подробнее',
+  'common.back': 'Назад',
+  'common.loading': 'Загрузка',
+  'common.empty': 'Здесь пока пусто.',
+  'common.save': 'Сохранить',
+  'common.cancel': 'Отмена',
+  'common.delete': 'Удалить',
+  'common.edit': 'Изменить',
+  'common.add': 'Добавить',
+  'common.confirmDelete': 'Удалить? Действие необратимо.',
+  'lang.label': 'Язык',
+  'theme.toLight': 'Светлая тема',
+  'theme.toDark': 'Тёмная тема',
+  'contact.name': 'Имя',
+  'contact.email': 'Email',
+  'contact.message': 'Сообщение',
+  'contact.send': 'Отправить сообщение',
+  'contact.sent': 'Сообщение отправлено — спасибо!',
+  'contact.translating': 'Переводим…',
+  'contact.namePh': 'Как к вам обращаться',
+  'contact.emailPh': 'you@company.com',
+  'contact.messagePh': 'Пару слов о задаче, сроках и команде…',
+  'contact.error': 'Что-то пошло не так. Попробуйте ещё раз.',
+  'footer.nav': 'Навигация',
+  'footer.contacts': 'Контакты',
+  'footer.rights': 'Все права защищены.',
+  'footer.admin': 'Панель',
+  'admin.login': 'Вход в панель',
+  'admin.username': 'Логин',
+  'admin.password': 'Пароль',
+  'admin.signin': 'Войти',
+  'admin.signout': 'Выйти',
+  'admin.dashboard': 'Обзор',
+  'admin.posts': 'Журнал',
+  'admin.projects': 'Проекты',
+  'admin.team': 'Команда',
+  'admin.settings': 'Настройки',
+  'admin.messages': 'Сообщения',
+  'admin.media': 'Медиа',
+  'admin.new': 'Создать',
+  'admin.title': 'Заголовок',
+  'admin.slug': 'Slug',
+  'admin.excerpt': 'Краткое описание',
+  'admin.body': 'Текст (Markdown)',
+  'admin.cover': 'Обложка',
+  'admin.client': 'Клиент',
+  'admin.year': 'Год',
+  'admin.tags': 'Теги',
+  'admin.link': 'Ссылка',
+  'admin.role': 'Роль',
+  'admin.bio': 'О себе',
+  'admin.photo': 'Фото',
+  'admin.order': 'Порядок',
+  'admin.publish': 'Опубликовано',
+  'admin.draft': 'Черновик',
+  'admin.preview': 'Предпросмотр',
+  'admin.saved': 'Сохранено',
+  'admin.name': 'Имя',
+  'admin.email': 'Email',
+  'admin.toSite': 'На сайт',
+};
 
 const en: Dict = {
   'nav.services': 'Services',
@@ -23,65 +94,49 @@ const en: Dict = {
   'nav.team': 'Team',
   'nav.journal': 'Journal',
   'nav.contact': 'Contact',
-  'nav.admin': 'Admin',
-  'hero.eyebrow': 'Product studio — est. 2019',
-  'hero.title1': 'ENGINEERING',
-  'hero.title2': 'THE UNBUILDABLE',
-  'hero.subtitle':
-    'We design and ship bold interfaces, distributed systems and security-first software for teams who refuse to settle.',
-  'hero.cta1': 'See our work',
-  'hero.cta2': 'Start a project',
-  'about.eyebrow': 'About',
-  'about.title': 'A small studio with a large appetite for hard problems.',
-  'about.body':
-    '6-7 Corporation turns ambiguous briefs into shipping software. We keep teams tiny, processes fast, and standards unusually high — then we protect what we build.',
-  'services.eyebrow': 'Capabilities',
-  'services.title': 'What we do',
-  'services.subtitle': 'Full-stack delivery across the product surface.',
-  'projects.eyebrow': 'Selected work',
-  'projects.title': 'Projects that shipped',
-  'projects.subtitle': 'A sample of recent delivery.',
-  'team.eyebrow': 'People',
-  'team.title': 'The authors',
-  'team.subtitle': 'Small team, senior by default.',
-  'contact.eyebrow': 'Contact',
-  'contact.title': 'Have something unbuildable?',
-  'contact.subtitle': 'Send a message — it gets translated automatically.',
-  'contact.name': 'Name',
-  'contact.email': 'Email',
-  'contact.message': 'Message',
-  'contact.send': 'Send message',
-  'contact.sent': 'Message sent — thank you.',
-  'contact.translating': 'Translating…',
-  'journal.eyebrow': 'Journal',
-  'journal.title': 'Notes from the studio',
-  'journal.subtitle': 'Field notes on building software.',
-  'footer.rights': 'All rights reserved.',
-  'footer.built': 'Built with React, Tailwind & z-md.',
-  'common.loading': 'Loading…',
+  'nav.cta': 'Start a project',
+  'common.all': 'All work',
+  'common.readAll': 'All notes',
+  'common.more': 'Read more',
+  'common.back': 'Back',
+  'common.loading': 'Loading',
+  'common.empty': 'Nothing here yet.',
   'common.save': 'Save',
   'common.cancel': 'Cancel',
   'common.delete': 'Delete',
   'common.edit': 'Edit',
   'common.add': 'Add',
-  'common.back': 'Back',
-  'common.empty': 'Nothing here yet.',
   'common.confirmDelete': 'Delete this item? This cannot be undone.',
-  'lang.translate': 'Translate to',
-  'lang.auto': 'Auto-translate',
+  'lang.label': 'Language',
+  'theme.toLight': 'Light theme',
+  'theme.toDark': 'Dark theme',
+  'contact.name': 'Name',
+  'contact.email': 'Email',
+  'contact.message': 'Message',
+  'contact.send': 'Send message',
+  'contact.sent': 'Message sent — thank you!',
+  'contact.translating': 'Translating…',
+  'contact.namePh': 'How should we address you',
+  'contact.emailPh': 'you@company.com',
+  'contact.messagePh': 'A few words about the task, timeline and team…',
+  'contact.error': 'Something went wrong. Please try again.',
+  'footer.nav': 'Navigation',
+  'footer.contacts': 'Contacts',
+  'footer.rights': 'All rights reserved.',
+  'footer.admin': 'Panel',
   'admin.login': 'Admin sign in',
   'admin.username': 'Username',
   'admin.password': 'Password',
   'admin.signin': 'Sign in',
   'admin.signout': 'Sign out',
-  'admin.dashboard': 'Dashboard',
+  'admin.dashboard': 'Overview',
   'admin.posts': 'Journal',
   'admin.projects': 'Projects',
   'admin.team': 'Team',
   'admin.settings': 'Settings',
   'admin.messages': 'Messages',
+  'admin.media': 'Media',
   'admin.new': 'New',
-  'admin.media': 'Media library',
   'admin.title': 'Title',
   'admin.slug': 'Slug',
   'admin.excerpt': 'Excerpt',
@@ -98,103 +153,23 @@ const en: Dict = {
   'admin.publish': 'Published',
   'admin.draft': 'Draft',
   'admin.preview': 'Preview',
-  'admin.saved': 'Saved.',
+  'admin.saved': 'Saved',
   'admin.name': 'Name',
   'admin.email': 'Email',
+  'admin.toSite': 'View site',
 };
 
-const ru: Dict = {
-  'nav.services': 'Услуги',
-  'nav.projects': 'Работы',
-  'nav.team': 'Команда',
-  'nav.journal': 'Журнал',
-  'nav.contact': 'Контакты',
-  'nav.admin': 'Админ',
-  'hero.eyebrow': 'Продукт-студия — с 2019',
-  'hero.title1': 'ПРОЕКТИРУЕМ',
-  'hero.title2': 'НЕВОЗМОЖНОЕ',
-  'hero.subtitle':
-    'Мы проектируем и запускаем дерзкие интерфейсы, распределённые системы и безопасное ПО для команд, которые не довольствуются обычным.',
-  'hero.cta1': 'Смотреть работы',
-  'hero.cta2': 'Заказать проект',
-  'about.eyebrow': 'О нас',
-  'about.title': 'Малая студия с большой любовью к сложным задачам.',
-  'about.body':
-    '6-7 Corporation превращает размытые задачи в работающее ПО. Команда маленькая, процессы быстрые, стандарты непривычно высокие — и всё, что мы строим, защищено.',
-  'services.eyebrow': 'Компетенции',
-  'services.title': 'Что мы делаем',
-  'services.subtitle': 'Полный цикл разработки по всей поверхности продукта.',
-  'projects.eyebrow': 'Избранные работы',
-  'projects.title': 'Запущенные проекты',
-  'projects.subtitle': 'Небольшой выбор свежих проектов.',
-  'team.eyebrow': 'Люди',
-  'team.title': 'Авторы',
-  'team.subtitle': 'Малая команда, по умолчанию senior.',
-  'contact.eyebrow': 'Контакт',
-  'contact.title': 'Есть невозможное?',
-  'contact.subtitle': 'Напишите — сообщение авто-переведётся.',
-  'contact.name': 'Имя',
-  'contact.email': 'Email',
-  'contact.message': 'Сообщение',
-  'contact.send': 'Отправить',
-  'contact.sent': 'Сообщение отправлено — спасибо.',
-  'contact.translating': 'Переводим…',
-  'journal.eyebrow': 'Журнал',
-  'journal.title': 'Заметки из студии',
-  'journal.subtitle': 'О том, как мы строим ПО.',
-  'footer.rights': 'Все права защищены.',
-  'footer.built': 'На React, Tailwind и z-md.',
-  'common.loading': 'Загрузка…',
-  'common.save': 'Сохранить',
-  'common.cancel': 'Отмена',
-  'common.delete': 'Удалить',
-  'common.edit': 'Редактировать',
-  'common.add': 'Добавить',
-  'common.back': 'Назад',
-  'common.empty': 'Здесь пока пусто.',
-  'common.confirmDelete': 'Удалить? Действие необратимо.',
-  'lang.translate': 'Перевод на',
-  'lang.auto': 'Авто-перевод',
-  'admin.login': 'Вход для админа',
-  'admin.username': 'Имя пользователя',
-  'admin.password': 'Пароль',
-  'admin.signin': 'Войти',
-  'admin.signout': 'Выйти',
-  'admin.dashboard': 'Панель',
-  'admin.posts': 'Журнал',
-  'admin.projects': 'Проекты',
-  'admin.team': 'Команда',
-  'admin.settings': 'Настройки',
-  'admin.messages': 'Сообщения',
-  'admin.new': 'Новый',
-  'admin.media': 'Галерея',
-  'admin.title': 'Заголовок',
-  'admin.slug': 'Slug',
-  'admin.excerpt': 'Краткое',
-  'admin.body': 'Текст (Markdown)',
-  'admin.cover': 'Обложка',
-  'admin.client': 'Клиент',
-  'admin.year': 'Год',
-  'admin.tags': 'Теги',
-  'admin.link': 'Ссылка',
-  'admin.role': 'Роль',
-  'admin.bio': 'О себе',
-  'admin.photo': 'Фото',
-  'admin.order': 'Порядок',
-  'admin.publish': 'Опубликовано',
-  'admin.draft': 'Черновик',
-  'admin.preview': 'Предпросмотр',
-  'admin.saved': 'Сохранено.',
-  'admin.name': 'Имя',
-  'admin.email': 'Email',
-};
+const DICTS: Record<Lang, Dict> = { ru, en };
 
-const DICTS: Record<Lang, Dict> = { en, ru };
+/** Localised pair of strings/content. */
+export type Localized<T = string> = Record<Lang, T>;
 
 type I18nValue = {
   lang: Lang;
   setLang: (l: Lang) => void;
   t: (key: string) => string;
+  /** Pick the current language from a localized value. */
+  pick: <T>(value: Localized<T>) => T;
   /** Translate arbitrary text to the current language via Google. */
   translate: (text: string) => Promise<string>;
 };
@@ -205,7 +180,9 @@ function getInitialLang(): Lang {
   try {
     const stored = localStorage.getItem('corp_lang');
     if (stored === 'en' || stored === 'ru') return stored;
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return (navigator.language || 'en').toLowerCase().startsWith('ru') ? 'ru' : 'en';
 }
 
@@ -218,17 +195,19 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLangState(l);
     try {
       localStorage.setItem('corp_lang', l);
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
+    document.documentElement.lang = l;
   }, []);
 
-  const t = useCallback(
-    (key: string) => DICTS[lang][key] ?? DICTS.en[key] ?? key,
-    [lang],
-  );
+  const t = useCallback((key: string) => DICTS[lang][key] ?? DICTS.ru[key] ?? key, [lang]);
+
+  const pick = useCallback(<T,>(value: Localized<T>) => value[lang] ?? value.ru, [lang]);
 
   const translate = useCallback((text: string) => translateCached(text, lang), [lang]);
 
-  const value = useMemo(() => ({ lang, setLang, t, translate }), [lang, setLang, t, translate]);
+  const value = useMemo(() => ({ lang, setLang, t, pick, translate }), [lang, setLang, t, pick, translate]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

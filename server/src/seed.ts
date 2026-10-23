@@ -22,14 +22,13 @@ function ensureAdmin() {
 function ensureSettings() {
   const settings: Record<string, string> = {
     company_name: '6-7 Corporation',
-    tagline: 'We build the unbuildable.',
+    tagline: 'Цифровые продукты, которые работают.',
     description:
-      '6-7 Corporation is a product studio engineering bold interfaces, ' +
-      'distributed systems and security-first software for teams who refuse to ' +
-      'settle for ordinary.',
+      '6-7 Corporation — студия продуктовой разработки: интерфейсы, ' +
+      'распределённые системы и безопасность для команд, которым важно качество.',
     email: 'hello@6-7corp.com',
     established: '2019',
-    locale_default: 'en',
+    locale_default: 'ru',
   };
   for (const [k, v] of Object.entries(settings)) {
     run(`INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO NOTHING`, k, v);
@@ -41,23 +40,23 @@ function ensureContent() {
 
   run(
     `INSERT INTO posts (title, slug, excerpt, body_md, cover, published) VALUES (?, ?, ?, ?, ?, 1)`,
-    'Why we engineer for the impossible',
-    'why-we-engineer',
-    'A short field note on scope, speed and staying secure at scale.',
-    `## The brief
+    'Почему мы берёмся за сложное',
+    'why-we-take-hard-problems',
+    'Короткая заметка о скоупе, скорости и безопасности на масштабе.',
+    `## С чего начинается бриф
 
-Every product starts with a question that sounds a little *too hard*.
+Каждый продукт начинается с вопроса, который звучит *слишком сложно*.
 
-We treat that as a feature, not a warning. The work is to cut the problem
-down to its spine, then build the spine well.
+Мы считаем это не предупреждением, а точкой входа. Задача — снять с проблемы
+всё лишнее, оставить основу и сделать эту основу хорошо.
 
-### What we optimise for
+### На что мы смотрим
 
-- **Clarity** — one obvious path through a thousand possible ones.
-- **Resilience** — systems that degrade gracefully instead of failing loudly.
-- **Security** — threat models written before the first line of code.
+- **Ясность** — один очевидный путь вместо тысячи возможных.
+- **Устойчивость** — системы деградируют мягко, а не падают громко.
+- **Безопасность** — модель угроз пишется до первой строки кода.
 
-> We do not ship anything we would not put in front of our own users.`,
+> Мы не отдаём ничего, что не поставили бы перед своими пользователями.`,
     null,
   );
 
@@ -69,17 +68,17 @@ down to its spine, then build the spine well.
     'Helio',
     '2024',
     'Payments, Fraud, Rust',
-    'A 12ms payment gateway with adaptive fraud scoring.',
-    `## What we did
+    'Платёжный шлюз с откликом 12 мс и адаптивным антифродом.',
+    `## Что сделали
 
-Rebuilt the authorisation pipeline in Rust and cut p99 latency from
-**480ms to 12ms** while adding adaptive fraud scoring.
+Переписали авторизационный пайплайн на Rust и снизили p99 с
+**480 мс до 12 мс**, добавив адаптивный скоринг мошенничества.
 
-### Stack
+### Стек
 
 - Rust · Tokio
 - PostgreSQL · Redis
-- Custom scoring runtime`,
+- Собственный runtime для скоринга`,
     null, 'https://example.com/helio', 1,
   );
 
@@ -91,31 +90,31 @@ Rebuilt the authorisation pipeline in Rust and cut p99 latency from
     'Northwind',
     '2023',
     'Platform, DevTools, TS',
-    'A developer platform serving 40k builds a day.',
-    `## What we did
+    'Платформа для разработчиков: 40 000 сборок в сутки.',
+    `## Что сделали
 
-Designed a build orchestration platform that scales to **40,000 builds/day**
-with deterministic caching.
+Спроектировали платформу оркестрации сборок, которая держит
+**40 000 сборок в сутки** за счёт детерминированного кеша.
 
-### Stack
+### Стек
 
 - TypeScript · React
-- Go orchestrator
-- Object storage`,
+- Go-оркестратор
+- Объектное хранилище`,
     null, 'https://example.com/northwind', 2,
   );
 
   run(
     `INSERT INTO team (name, role, bio, photo, socials, order_idx) VALUES (?, ?, ?, ?, ?, ?)`,
-    'Ada Voss', 'Founder & CTO', 'Sets the technical direction. 15 years shipping at scale.', null, JSON.stringify({ website: 'https://example.com', github: 'https://github.com/ada' }), 1,
+    'Ada Voss', 'Основатель и CTO', 'Отвечает за техническое направление. 15 лет разработки на масштабе.', null, JSON.stringify({ website: 'https://example.com', github: 'https://github.com/ada' }), 1,
   );
   run(
     `INSERT INTO team (name, role, bio, photo, socials, order_idx) VALUES (?, ?, ?, ?, ?, ?)`,
-    'Kenji Mori', 'Security Lead', 'Red-teams everything before it ships. Former CTF champion.', null, JSON.stringify({ github: 'https://github.com/kenji', telegram: 'https://t.me/kenji' }), 2,
+    'Kenji Mori', 'Руководитель безопасности', 'Прогоняет red team всё до релиза. Чемпион CTF.', null, JSON.stringify({ github: 'https://github.com/kenji', telegram: 'https://t.me/kenji' }), 2,
   );
   run(
     `INSERT INTO team (name, role, bio, photo, socials, order_idx) VALUES (?, ?, ?, ?, ?, ?)`,
-    'Lena Ortiz', 'Design Director', 'Turns dense systems into calm interfaces.', null, JSON.stringify({ x: 'https://x.com/lena', website: 'https://example.com/lena' }), 3,
+    'Lena Ortiz', 'Директор по дизайну', 'Превращает сложные системы в спокойные интерфейсы.', null, JSON.stringify({ x: 'https://x.com/lena', website: 'https://example.com/lena' }), 3,
   );
 }
 

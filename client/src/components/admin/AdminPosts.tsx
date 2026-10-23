@@ -97,7 +97,7 @@ export function AdminPosts() {
         actions={
           <button
             onClick={() => setForm({ ...EMPTY })}
-            className="rounded-full border border-white/20 px-5 py-2 font-mono text-[11px] uppercase tracking-wider text-white/70 hover:border-white hover:text-white"
+            className="rounded-full border border-line-strong px-5 py-2 font-mono text-[11px] uppercase tracking-wider text-fg/80 hover:border-line-strong hover:text-fg"
           >
             + {t('admin.new')}
           </button>
@@ -111,22 +111,22 @@ export function AdminPosts() {
               key={p.id}
               onClick={() => select(p)}
               className={`w-full rounded-xl border p-4 text-left transition-colors ${
-                form.id === p.id ? 'border-white bg-white/5' : 'border-white/10 hover:border-white/30'
+                form.id === p.id ? 'border-line-strong bg-surface' : 'border-line hover:border-line-strong'
               }`}
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-sm font-semibold text-white">{p.title}</span>
-                <span className={`font-mono text-[10px] uppercase ${p.published ? 'text-white/50' : 'text-white/30'}`}>
+                <span className="font-display text-sm font-semibold text-fg">{p.title}</span>
+                <span className={`font-mono text-[10px] uppercase ${p.published ? 'text-muted' : 'text-muted/70'}`}>
                   {p.published ? 'published' : 'draft'}
                 </span>
               </div>
-              <div className="mt-1 font-mono text-[10px] text-white/35">/{p.slug}</div>
+              <div className="mt-1 font-mono text-[10px] text-muted">/{p.slug}</div>
             </button>
           ))}
-          {list.saved && <p className="font-mono text-[10px] text-white/40">✓</p>}
+          {list.saved && <p className="font-mono text-[10px] text-muted">✓</p>}
         </div>
 
-        <div className="rounded-2xl border border-white/10 p-6">
+        <div className="rounded-[22px] border border-line p-6">
           <div className="grid gap-5">
             <Field label={t('admin.title')}>
               <TextInput value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="Post title" />
@@ -140,18 +140,18 @@ export function AdminPosts() {
 
             <div className="flex items-center justify-between">
               <Field label={t('admin.body')}>
-                <span className="mt-2.5 font-mono text-[10px] text-white/40">Markdown supported · images via ![](url)</span>
+                <span className="mt-2.5 font-mono text-[10px] text-muted">Markdown supported · images via ![](url)</span>
               </Field>
               <button
                 onClick={() => setShowPreview((s) => !s)}
-                className="border border-white/15 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-white/70 hover:border-white"
+                className="border border-line px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-fg/80 hover:border-line-strong"
               >
                 {showPreview ? t('admin.preview') : 'Edit'}
               </button>
             </div>
 
             {showPreview ? (
-              <div className="rounded-xl border border-white/10 bg-ink-900 p-5">
+              <div className="rounded-[18px] border border-line bg-ink-900 p-5">
                 <CorpMarkdown markdown={form.body_md} />
               </div>
             ) : (
@@ -166,13 +166,13 @@ export function AdminPosts() {
 
             <label className="flex items-center gap-3">
               <input type="checkbox" checked={form.published} onChange={(e) => set('published', e.target.checked)} className="h-4 w-4 accent-white" />
-              <span className="font-mono text-xs uppercase tracking-wider text-white/70">{t('admin.publish')}</span>
+              <span className="font-mono text-xs uppercase tracking-wider text-fg/80">{t('admin.publish')}</span>
             </label>
           </div>
 
-          <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
+          <div className="mt-8 flex items-center justify-between border-t border-line pt-6">
             {form.id ? (
-              <button onClick={() => setToDelete(form.id)} className="font-mono text-[11px] uppercase tracking-wider text-white/40 hover:text-white/70">
+              <button onClick={() => setToDelete(form.id)} className="font-mono text-[11px] uppercase tracking-wider text-muted hover:text-fg">
                 {t('common.delete')}
               </button>
             ) : <span />}

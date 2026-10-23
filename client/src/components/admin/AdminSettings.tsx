@@ -35,7 +35,7 @@ export function AdminSettings() {
   return (
     <div>
       <AdminHeader title={t('admin.settings')} subtitle="Company information" />
-      <div className="mt-8 grid gap-6 rounded-2xl border border-white/10 p-6 sm:grid-cols-2">
+      <div className="mt-8 grid gap-6 rounded-[22px] border border-line p-6 sm:grid-cols-2">
         <Field label={t('admin.title')} hint="Company name"><TextInput value={form.company_name} onChange={(e) => set('company_name', e.target.value)} /></Field>
         <Field label="Tagline"><TextInput value={form.tagline} onChange={(e) => set('tagline', e.target.value)} /></Field>
         <Field label={t('admin.email')}><TextInput value={form.email} onChange={(e) => set('email', e.target.value)} /></Field>
@@ -44,7 +44,7 @@ export function AdminSettings() {
           <select
             value={form.locale_default}
             onChange={(e) => set('locale_default', e.target.value)}
-            className="mt-2 w-full border-b border-white/20 bg-ink-900/60 px-1 py-2.5 font-mono text-sm text-white outline-none focus:border-white"
+            className="mt-2 w-full border-b border-line-strong bg-ink-900/60 px-1 py-2.5 font-mono text-sm text-fg outline-none focus:border-white"
           >
             <option value="en">English</option>
             <option value="ru">Русский</option>

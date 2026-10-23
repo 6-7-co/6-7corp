@@ -1,49 +1,46 @@
 import { motion } from 'framer-motion';
 import { Reveal } from '../components/Reveal';
 import { useI18n } from '../i18n';
-import { useContent } from '../context/ContentContext';
-
-const PRINCIPLES = [
-  { n: '01', t: 'Clarity', d: 'One obvious path through a thousand possible ones.' },
-  { n: '02', t: 'Resilience', d: 'Systems that degrade gracefully, not loudly.' },
-  { n: '03', t: 'Security', d: 'Threat models written before the first line of code.' },
-];
+import { ABOUT } from '../content';
 
 export function About() {
-  const { t } = useI18n();
-  const { settings } = useContent();
+  const { pick } = useI18n();
 
   return (
-    <section id="services" className="relative border-t border-white/10 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal>
-          <p className="eyebrow">{t('about.eyebrow')}</p>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <h2 className="display mt-5 max-w-4xl text-3xl sm:text-5xl lg:text-6xl">
-            {t('about.title')}
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <p className="mt-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-            {settings.description || t('about.body')}
-          </p>
-        </Reveal>
+    <section id="about" className="relative scroll-mt-28 border-t border-line py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            <Reveal>
+              <p className="eyebrow">{pick(ABOUT.eyebrow)}</p>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <h2 className="display mt-4 max-w-2xl text-[clamp(1.9rem,4vw,3.2rem)] font-medium">
+                {pick(ABOUT.title)}
+              </h2>
+            </Reveal>
+          </div>
+          <Reveal delay={0.12} className="lg:col-span-5 lg:pt-14">
+            <p className="lead max-w-lg">{pick(ABOUT.body)}</p>
+          </Reveal>
+        </div>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
-          {PRINCIPLES.map((p, i) => (
+        <div className="mt-16 grid gap-4 sm:grid-cols-3">
+          {ABOUT.principles.map((p, i) => (
             <motion.div
               key={p.n}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group relative bg-ink p-8 transition-colors hover:bg-ink-800"
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className="surface card-hover p-7"
             >
-              <span className="font-mono text-sm text-white/30">{p.n}</span>
-              <h3 className="mt-4 font-display text-xl font-semibold text-white">{p.t}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/55">{p.d}</p>
-              <span className="absolute bottom-0 left-0 h-px w-0 bg-white transition-all duration-500 group-hover:w-full" />
+              <div className="flex items-baseline justify-between">
+                <span className="font-mono text-[11px] tracking-[0.15em] text-muted/70">{p.n}</span>
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--accent-a)' }} />
+              </div>
+              <h3 className="mt-8 font-display text-[19px] font-semibold tracking-[-0.02em]">{pick(p.title)}</h3>
+              <p className="mt-2.5 text-[14px] leading-relaxed text-muted">{pick(p.text)}</p>
             </motion.div>
           ))}
         </div>
