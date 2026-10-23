@@ -1,47 +1,56 @@
 import { Link } from 'react-router-dom';
-import { Reveal, Stagger, StaggerItem } from '../components/Reveal';
+import { Reveal, SectionHeading, Stagger, StaggerItem } from '../components/Reveal';
 import { useI18n } from '../i18n';
 import { useContent } from '../context/ContentContext';
+import { JOURNAL } from '../content';
+import { formatDate } from '../lib/format';
 
 export function JournalPreview() {
-  const { t } = useI18n();
+  const { pick, t, lang } = useI18n();
   const { posts } = useContent();
   const latest = posts.slice(0, 3);
 
   return (
-    <section id="journal" className="relative border-t border-white/10 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal>
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="eyebrow">{t('journal.eyebrow')}</p>
-              <h2 className="display mt-5 text-3xl sm:text-5xl lg:text-6xl">{t('journal.title')}</h2>
-            </div>
+    <section id="journal" className="relative scroll-mt-28 border-t border-line py-24 sm:py-32">
+      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
+        <SectionHeading
+          eyebrow={pick(JOURNAL.eyebrow)}
+          title={pick(JOURNAL.title)}
+          lead={pick(JOURNAL.subtitle)}
+          action={
             <Link
               to="/journal"
-              className="hidden shrink-0 font-mono text-xs uppercase tracking-[0.18em] text-white/60 transition-colors hover:text-white sm:block"
+              className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-[13px] font-semibold transition-colors hover:bg-surface-soft"
             >
-              {t('common.back')} →
+              {t('common.readAll')}
+              <span aria-hidden="true">→</span>
             </Link>
-          </div>
-        </Reveal>
+          }
+        />
 
         {latest.length === 0 ? (
-          <p className="mt-12 font-mono text-sm text-white/40">{t('common.empty')}</p>
+          <Reveal className="mt-12">
+            <p className="rounded-[26px] border border-line bg-surface px-7 py-10 text-sm text-muted">
+              {pick(JOURNAL.empty)}
+            </p>
+          </Reveal>
         ) : (
-          <Stagger className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
+          <Stagger className="mt-12 overflow-hidden rounded-[26px] border border-line">
             {latest.map((p) => (
               <StaggerItem key={p.id}>
                 <Link
                   to={`/journal/${p.slug}`}
-                  className="group flex flex-col gap-2 border-b border-white/10 bg-ink p-6 transition-colors hover:bg-ink-800 sm:flex-row sm:items-center sm:justify-between"
+                  className="group flex flex-col gap-3 border-b border-line bg-surface px-7 py-6 transition-colors last:border-b-0 hover:bg-surface-soft sm:flex-row sm:items-center sm:justify-between"
                 >
-                  <h3 className="font-display text-lg font-semibold text-white transition-transform duration-500 group-hover:translate-x-2">
-                    {p.title}
-                  </h3>
-                  <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-white/40">
-                    <span>{p.excerpt.slice(0, 48)}…</span>
-                    <span className="text-white/20">{p.created_at?.slice(0, 10)}</span>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-[17px] font-semibold tracking-[-0.02em]">{p.title}</h3>
+                    {p.excerpt && (
+                      <p className="mt-1.5 line-clamp-1 max-w-xl text-[13.5px] text-muted">{p.excerpt}</p>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 items-center gap-3 text-[12px] text-muted">
+                    <time>{formatDate(p.created_at, lang)}</time>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   </div>
                 </Link>
               </StaggerItem>

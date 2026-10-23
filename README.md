@@ -1,11 +1,13 @@
 # 6-7 Corporation
 
-A black-and-white, motion-heavy corporate website for **6-7 Corporation** with a
-full admin CMS, secure API and automatic Google Translate for messages.
+A warm, near-black corporate website for **6-7 Corporation** with a full admin
+CMS, secure API and automatic Google Translate for messages.
 
-Built to look deliberately *not* like a stock AI website: kinetic typography,
-a live particle field, floating wireframe geometry, magnetic buttons, tilt
-cards and a monochrome design system.
+Design language: soft geometric sans (Onest + Manrope, full Cyrillic support),
+generous whitespace, large corner radii, thin organic line art in the
+background and one restrained iridescent accent. Motion is calm and editorial —
+masked line reveals, scroll-fades, a floating glass navigation pill and a
+pastel statistics card — rather than glitchy or busy.
 
 ---
 
@@ -21,18 +23,21 @@ cards and a monochrome design system.
 
 ## Features
 
-- **Homepage** — animated hero with a live **3D object** (React Three Fiber:
-  wireframe icosahedron shell + crystal core + orbiting rings + sparkles,
-  tilts toward the cursor), a canvas particle network, floating wireframe
-  geometry, scramble text, glitch monogram, parallax, count-up stats and
-  marquee. Plus about, services, projects, team, journal preview, contact CTA.
+- **Homepage** — typographic hero with masked line reveals, iridescent accent
+  word, slowly drifting organic line art, client wordmarks and a pastel stats
+  card. Plus about, capabilities, work, team, journal preview and contact CTA.
+- **Working section navigation** — every nav/footer/anchor link scrolls to its
+  section (with header offset and retry-on-mount), including cross-page hashes
+  such as `/#work`.
 - **Theme switcher** — dark / light toggle; the whole UI is driven by
   themeable CSS variables (black/white in both directions).
 - **Public pages** — project detail, journal list/detail, contact form.
 - **Bilingual UI** — English / Русский with a language switcher.
 - **Auto-translate** — contact messages are translated through Google Translate
   (public `gtx` endpoint, no API key) and stored alongside the original.
-- **Admin CMS** (`/admin`, default `admin` / `admin12345`):
+- **Admin CMS on a hidden route** (`/studio-6-7` by default — configurable via
+  `VITE_ADMIN_PATH`, never linked from the public site; default credentials
+  `admin` / `admin12345`, change them in `.env`):
   - Write journal posts in **Markdown** with live preview + image uploads
   - Add / edit / delete **projects** (cover, client, year, tags, link, body)
   - Manage **team** members (photo, role, bio, socials, ordering)
@@ -63,8 +68,19 @@ npm run dev:server   # API on http://localhost:3001
 npm run dev:client   # site on http://localhost:5173 (proxies /api + /uploads)
 ```
 
-Then open `http://localhost:5173`. Sign in at `/admin` with
-`admin` / `admin12345` (override via `ADMIN_USER` / `ADMIN_PASSWORD`).
+Then open `http://localhost:5173`. The admin panel is **not linked** anywhere
+on the public site — open `http://localhost:5173/studio-6-7` directly and sign
+in with `admin` / `admin12345` (override via `ADMIN_USER` / `ADMIN_PASSWORD`).
+
+To use your own secret path, set it before building/starting the dev server
+(Vite reads `.env` from the repo root):
+
+```bash
+VITE_ADMIN_PATH=my-private-panel npm run dev:client
+VITE_ADMIN_PATH=my-private-panel npm run build:client
+```
+
+Whatever you pick, bookmark it — there is no link to the panel from the site.
 
 For production, set a strong `JWT_SECRET` (≥ 32 chars) and
 `CLIENT_ORIGIN`, see `.env.example`.
@@ -75,7 +91,7 @@ A single process serves the built client, the API and `/uploads` from one
 port with one CSP. SQLite data and uploads are persisted on bind mounts.
 
 ```bash
-docker compose up --build -d      # http://localhost:3001
+VITE_ADMIN_PATH=my-private-panel docker compose up --build -d   # http://localhost:3001
 docker compose logs -f app        # logs
 ```
 

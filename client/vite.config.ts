@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 // ever talks to one origin (the Vite preview host).
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // Read .env from the repo root so VITE_* values (e.g. the hidden admin path)
+  // can live in one place next to the server config.
+  envDir: '..',
   server: {
     host: '0.0.0.0',
     port: 5173,

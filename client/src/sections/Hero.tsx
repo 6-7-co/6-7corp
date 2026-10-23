@@ -1,200 +1,158 @@
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
-import { HeroScene } from '../components/HeroScene';
-const Hero3D = lazy(() => import('../components/Hero3D').then((m) => ({ default: m.Hero3D })));
-import { FloatingShapes } from '../components/FloatingShapes';
-import { MagneticButton } from '../components/MagneticButton';
-import { Marquee, MarqueeItem } from '../components/Marquee';
-import { ScrambleText } from '../components/ScrambleText';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { OrganicLines } from '../components/OrganicLines';
 import { useI18n } from '../i18n';
-import { useTheme } from '../context/ThemeContext';
+import { HERO } from '../content';
 
-function Stat({ value, label, suffix = '' }: { value: number; label: string; suffix?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
-  const [n, setN] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    let raf = 0;
-    const start = performance.now();
-    const dur = 1400;
-    const animate = (t: number) => {
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(eased * value));
-      if (p < 1) raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, value]);
-
+function HeadlineLine({
+  children,
+  delay,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay: number;
+  className?: string;
+}) {
   return (
-    <div ref={ref} className="border-l border-line pl-4">
-      <div className="font-display text-3xl font-bold text-fg sm:text-4xl">
-        {n}
-        <span className="text-fg/50">{suffix}</span>
-      </div>
-      <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{label}</div>
-    </div>
+    <span className="block overflow-hidden pb-[0.12em] -mb-[0.08em]">
+      <motion.span
+        initial={{ y: '108%' }}
+        animate={{ y: 0 }}
+        transition={{ duration: 1.1, delay, ease: [0.16, 1, 0.3, 1] }}
+        className={`block ${className}`}
+      >
+        {children}
+      </motion.span>
+    </span>
   );
 }
 
 export function Hero() {
-  const { t } = useI18n();
-  const { fg, bg, muted } = useTheme();
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isDesktop, setIsDesktop] = useState(
-    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true,
-  );
+  const { pick, t } = useI18n();
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const yTitle = useTransform(scrollYProgress, [0, 1], [0, -90]);
-  const yContent = useTransform(scrollYProgress, [0, 1], [0, 70]);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-
-  useEffect(() => {
-    function onResize() {
-      setIsDesktop(window.innerWidth >= 1024);
-    }
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const yType = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -70]);
+  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0.2]);
 
   return (
-    <section ref={sectionRef} className="relative min-h-[100svh] w-full overflow-hidden">
-      {/* Background layers */}
-      <HeroScene color={fg} />
-      <Suspense fallback={null}>
-        <Hero3D
-          fg={fg}
-          bg={bg}
-          muted={muted}
-          cameraZ={isDesktop ? 6 : 8.5}
-          className="right-0 top-0 h-full w-full lg:w-[52%]"
-        />
-      </Suspense>
-      <div className="bg-grid absolute inset-0 opacity-60" />
-      <FloatingShapes />
+    <section ref={ref} id="top" className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-40">
+      <OrganicLines />
 
-      {/* Watermark */}
-      <div className="watermark pointer-events-none absolute -left-2 top-1/2 -translate-y-1/2 select-none text-[34vw] leading-none sm:text-[26vw]">
-        6-7
-      </div>
-
-      {/* Vignette + glow */}
-      <div
-        className="absolute inset-0"
-        style={{ background: `radial-gradient(120% 80% at 75% 10%, color-mix(in oklab, ${fg} 10%, transparent), transparent 55%)` }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{ background: 'radial-gradient(120% 120% at 50% 50%, transparent 40%, color-mix(in oklab, var(--bg) 75%, transparent))' }}
-      />
-
-      {/* Content */}
-      <motion.div
-        style={{ y: yContent, opacity: fade }}
-        className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 pb-16 pt-28 sm:px-8"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="flex items-center gap-3"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-fg opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-fg" />
-          </span>
-          <span className="eyebrow">{t('hero.eyebrow')}</span>
-        </motion.div>
-
-        {/* Giant monogram + title */}
-        <motion.div style={{ y: yTitle }} className="mt-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="display text-[15vw] leading-[0.82] sm:text-[12vw] lg:text-[9.5vw]"
-          >
-            <span className="font-mono glitch text-fg" data-text="6-7">
-              6-7
-            </span>
-            <span className="block text-fg">
-              <ScrambleText text={t('hero.title1')} className="block" />
-              <ScrambleText text={t('hero.title2')} className="block" />
-            </span>
-          </motion.h1>
-        </motion.div>
-
+      <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-8">
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-8 max-w-xl text-base leading-relaxed text-fg/65 sm:text-lg"
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="flex items-center gap-2.5 text-[12.5px] font-medium tracking-[0.02em] text-muted"
         >
-          {t('hero.subtitle')}
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--accent-a)' }} />
+          {pick(HERO.eyebrow)}
         </motion.p>
 
+        <div className="mt-7 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+          <motion.h1
+            style={{ y: yType, opacity: fade }}
+            className="display col-span-full text-[clamp(3.4rem,11.5vw,9.5rem)] font-normal leading-[0.88] tracking-[-0.045em] lg:col-span-8"
+          >
+            <HeadlineLine delay={0.25}>{pick(HERO.line1)}</HeadlineLine>
+            <HeadlineLine delay={0.36} className="grad-text">
+              {pick(HERO.line2)}
+            </HeadlineLine>
+            <HeadlineLine delay={0.47}>{pick(HERO.line3)}</HeadlineLine>
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="col-span-full lg:col-span-4 lg:pb-4"
+          >
+            <p className="max-w-sm text-[15px] leading-relaxed text-muted">{pick(HERO.description)}</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3.5 text-[14px] font-semibold transition-transform duration-300 hover:-translate-y-0.5"
+                style={{ background: 'var(--cta-bg)', color: 'var(--cta-fg)' }}
+              >
+                {pick(HERO.ctaPrimary)}
+              </Link>
+              <a
+                href="#work"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="inline-flex items-center justify-center rounded-full border border-line-strong px-6 py-3.5 text-[14px] font-semibold text-fg transition-colors hover:bg-surface-soft"
+              >
+                {pick(HERO.ctaSecondary)}
+              </a>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Trusted by */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.65 }}
-          className="mt-10 flex flex-wrap items-center gap-4"
+          transition={{ duration: 0.9, delay: 0.95 }}
+          className="mt-20 text-center sm:mt-28"
         >
-          <MagneticButton href="/#work">{t('hero.cta1')}</MagneticButton>
-          <MagneticButton href="/#contact" strength={0.25} className="border-dashed">
-            {t('hero.cta2')}
-          </MagneticButton>
+          <p className="text-[13px] text-muted/80">{pick(HERO.trusted)}</p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-14">
+            {HERO.clients.map((name, i) => (
+              <span
+                key={name}
+                className={`select-none text-[15px] font-semibold text-fg/45 transition-colors hover:text-fg/80 ${
+                  i % 3 === 0
+                    ? 'tracking-[-0.04em]'
+                    : i % 3 === 1
+                      ? 'font-serif italic tracking-[-0.01em]'
+                      : 'text-[13px] uppercase tracking-[0.18em]'
+                }`}
+              >
+                {name}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Stats */}
+        {/* Stat card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.85 }}
-          className="mt-16 grid grid-cols-2 gap-8 border-t border-line pt-8 sm:grid-cols-4"
+          transition={{ duration: 1, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+          className="pastel mt-14 grid grid-cols-1 gap-y-10 rounded-[34px] px-8 py-12 text-center shadow-[var(--shadow-soft)] sm:mt-16 sm:grid-cols-3 sm:gap-y-0 sm:px-10"
         >
-          <Stat value={150} suffix="+" label="Projects shipped" />
-          <Stat value={12} suffix="y" label="Years building" />
-          <Stat value={99} suffix=".9%" label="Uptime" />
-          <Stat value={0} suffix="" label="Security incidents" />
+          {HERO.stats.map((s, i) => (
+            <div
+              key={s.value}
+              className={`flex flex-col items-center justify-center ${
+                i > 0 ? 'sm:border-l sm:border-black/10' : ''
+              }`}
+            >
+              <span className="display text-[clamp(2.2rem,4.5vw,3.4rem)] font-medium tracking-[-0.04em] text-[#0b0b0d]">
+                {s.value}
+              </span>
+              <span className="mt-2 text-[13px] text-[#0b0b0d]/60">{pick(s.label)}</span>
+            </div>
+          ))}
         </motion.div>
-      </motion.div>
 
-      {/* Bottom marquee */}
-      <div className="absolute inset-x-0 bottom-0 z-10 border-y border-line bg-bg/40 py-3 backdrop-blur-sm">
-        <Marquee>
-          <MarqueeItem className="gap-8 px-8">
-            {['SECURITY', 'DISTRIBUTED SYSTEMS', 'PRODUCT DESIGN', 'WEB PLATFORMS', 'FRAUD DETECTION', 'DEVTOOLS'].map(
-              (w) => (
-                <span key={w} className="flex items-center gap-8">
-                  <span className="font-mono text-xs uppercase tracking-[0.3em] text-fg/70">{w}</span>
-                  <span className="text-fg/30">✦</span>
-                </span>
-              ),
-            )}
-          </MarqueeItem>
-        </Marquee>
+        <div className="pb-24 pt-10 text-center">
+          <button
+            onClick={() =>
+              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted transition-colors hover:text-fg"
+          >
+            {t('common.more')}
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
       </div>
-
-      {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-14 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">Scroll</span>
-        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-fg/30 p-1">
-          <motion.span
-            animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
-            className="h-1.5 w-1 rounded-full bg-fg"
-          />
-        </span>
-      </motion.div>
     </section>
   );
 }

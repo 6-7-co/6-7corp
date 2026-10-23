@@ -1,56 +1,114 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
+import { useAuth } from '../context/AuthContext';
+import { ADMIN_URL } from '../lib/adminRoute';
+import { FOOTER } from '../content';
+
+const NAV = [
+  { section: 'capabilities', key: 'nav.services' },
+  { section: 'work', key: 'nav.projects' },
+  { section: 'team', key: 'nav.team' },
+  { section: 'contact', key: 'nav.contact' },
+];
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, pick } = useI18n();
+  const { admin } = useAuth();
+
+  function go(section: string) {
+    if (window.location.pathname === '/') {
+      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.assign(`/#${section}`);
+    }
+  }
+
   return (
-    <footer className="relative mt-px border-t border-white/10 bg-ink">
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="relative border-t border-line">
+      <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 font-mono text-xs font-bold">
+            <Link to="/" className="flex items-center gap-2.5">
+              <span className="grid h-9 w-9 place-items-center rounded-[13px] border border-line-strong bg-surface text-[11px] font-semibold">
                 6-7
               </span>
-              <span className="font-display text-sm font-semibold tracking-tight">CORPORATION</span>
-            </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">{t('about.body')}</p>
-          </div>
-
-          <div className="space-y-3">
-            <p className="eyebrow">Navigate</p>
-            {[
-              { href: '/#services', key: 'nav.services' },
-              { href: '/#work', key: 'nav.projects' },
-              { href: '/#team', key: 'nav.team' },
-              { href: '/journal', key: 'nav.journal' },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                to={l.href}
-                className="block text-sm text-white/70 transition-colors hover:text-white"
-              >
-                {t(l.key)}
-              </Link>
-            ))}
-          </div>
-
-          <div className="space-y-3">
-            <p className="eyebrow">Contact</p>
-            <a href="mailto:hello@6-7corp.com" className="block text-sm text-white/70 transition-colors hover:text-white">
+              <span className="font-display text-[15px] font-semibold tracking-tight">
+                6-7<span className="text-muted"> Corp</span>
+              </span>
+            </Link>
+            <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-muted">{pick(FOOTER.tagline)}</p>
+            <a href="mailto:hello@6-7corp.com" className="link-soft mt-5 inline-block text-[14px]">
               hello@6-7corp.com
             </a>
-            <Link to="/#contact" className="block text-sm text-white/70 transition-colors hover:text-white">
-              {t('nav.contact')}
-            </Link>
+          </div>
+
+          <div>
+            <p className="text-[12px] font-medium uppercase tracking-[0.16em] text-muted/70">{t('footer.nav')}</p>
+            <ul className="mt-4 space-y-2.5">
+              {NAV.map((l) => (
+                <li key={l.section}>
+                  <button
+                    onClick={() => go(l.section)}
+                    className="text-[14px] text-muted transition-colors hover:text-fg"
+                  >
+                    {t(l.key)}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <Link to="/journal" className="text-[14px] text-muted transition-colors hover:text-fg">
+                  {t('nav.journal')}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-[12px] font-medium uppercase tracking-[0.16em] text-muted/70">
+              {t('footer.contacts')}
+            </p>
+            <ul className="mt-4 space-y-2.5">
+              <li>
+                <a
+                  href="https://t.me/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-[14px] text-muted transition-colors hover:text-fg"
+                >
+                  Telegram
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/6-7-co"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-[14px] text-muted transition-colors hover:text-fg"
+                >
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <Link to="/contact" className="text-[14px] text-muted transition-colors hover:text-fg">
+                  {t('nav.contact')}
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
-            © {new Date().getFullYear()} 6-7 Corporation — {t('footer.rights')}
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 sm:flex-row sm:items-center">
+          <p className="text-[12.5px] text-muted/70">
+            © {new Date().getFullYear()} 6-7 Corporation. {t('footer.rights')}
           </p>
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">{t('footer.built')}</p>
+          <div className="flex items-center gap-4">
+            <span className="text-[12.5px] text-muted/50">Stockholm · Remote</span>
+            {admin && (
+              <Link to={ADMIN_URL} className="text-[12.5px] text-muted transition-colors hover:text-fg">
+                {t('footer.admin')}
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </footer>

@@ -39,31 +39,31 @@ export function AdminMessages() {
     <div>
       <AdminHeader title={t('admin.messages')} subtitle={`${items.length} ${t('admin.messages').toLowerCase()}`} />
       <div className="mt-8 space-y-3">
-        {items.length === 0 && <p className="font-mono text-sm text-white/40">{t('common.empty')}</p>}
+        {items.length === 0 && <p className="font-mono text-sm text-muted">{t('common.empty')}</p>}
         {items.map((m) => (
-          <div key={m.id} className="rounded-2xl border border-white/10 p-5">
+          <div key={m.id} className="rounded-[22px] border border-line p-5">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-display text-sm font-semibold text-white">{m.name}</span>
-                <a href={`mailto:${m.email}`} className="ml-3 font-mono text-[11px] text-white/45 hover:text-white/70">{m.email}</a>
+                <span className="font-display text-sm font-semibold text-fg">{m.name}</span>
+                <a href={`mailto:${m.email}`} className="ml-3 font-mono text-[11px] text-muted hover:text-fg">{m.email}</a>
               </div>
-              <span className="font-mono text-[10px] text-white/35">{m.created_at?.slice(0, 19).replace('T', ' ')}</span>
+              <span className="font-mono text-[10px] text-muted">{m.created_at?.slice(0, 19).replace('T', ' ')}</span>
             </div>
             <div className="mt-3 space-y-2">
-              <p className="font-mono text-sm text-white/80">{m.content}</p>
+              <p className="font-mono text-sm text-fg">{m.content}</p>
               {m.content_en && m.content_en !== m.content && (
-                <p className="border-l border-white/15 pl-3 font-mono text-xs text-white/45">EN: {m.content_en}</p>
+                <p className="border-l border-line pl-3 font-mono text-xs text-muted">EN: {m.content_en}</p>
               )}
               {m.content_ru && m.content_ru !== m.content && (
-                <p className="border-l border-white/15 pl-3 font-mono text-xs text-white/45">RU: {m.content_ru}</p>
+                <p className="border-l border-line pl-3 font-mono text-xs text-muted">RU: {m.content_ru}</p>
               )}
             </div>
             <div className="mt-4">
-              <button onClick={() => setToDelete(m)} className="font-mono text-[10px] uppercase tracking-wider text-white/40 hover:text-white/70">{t('common.delete')}</button>
+              <button onClick={() => setToDelete(m)} className="font-mono text-[10px] uppercase tracking-wider text-muted hover:text-fg">{t('common.delete')}</button>
             </div>
           </div>
         ))}
-        {saved && <p className="font-mono text-[10px] text-white/40">✓</p>}
+        {saved && <p className="font-mono text-[10px] text-muted">✓</p>}
       </div>
       <ConfirmDialog open={!!toDelete} title={t('common.confirmDelete')} onConfirm={remove} onCancel={() => setToDelete(null)} />
     </div>

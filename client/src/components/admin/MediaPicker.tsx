@@ -38,7 +38,7 @@ export function MediaPicker({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="relative h-20 w-20 overflow-hidden rounded-lg border border-white/15 bg-ink-800"
+              className="relative h-20 w-20 overflow-hidden rounded-[13px] border border-line bg-ink-800"
             >
               <img src={value} alt="" className="h-full w-full object-cover grayscale" />
             </motion.div>
@@ -46,7 +46,7 @@ export function MediaPicker({
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="flex h-20 w-20 items-center justify-center rounded-lg border border-dashed border-white/25 text-2xl text-white/40 transition-colors hover:border-white hover:text-white"
+              className="flex h-20 w-20 items-center justify-center rounded-[13px] border border-dashed border-white/25 text-2xl text-muted transition-colors hover:border-line-strong hover:text-fg"
             >
               +
             </button>
@@ -57,7 +57,7 @@ export function MediaPicker({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="border border-white/20 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-white/70 transition-colors hover:border-white hover:text-white disabled:opacity-40"
+            className="border border-line-strong px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-fg/80 transition-colors hover:border-line-strong hover:text-fg disabled:opacity-40"
           >
             {busy ? 'Uploading…' : value ? 'Replace' : 'Upload'}
           </button>
@@ -65,7 +65,7 @@ export function MediaPicker({
             <button
               type="button"
               onClick={() => onChange(null)}
-              className="font-mono text-[11px] text-white/40 hover:text-white/70"
+              className="font-mono text-[11px] text-muted hover:text-fg"
             >
               Remove
             </button>
@@ -83,8 +83,8 @@ export function MediaPicker({
           e.target.value = '';
         }}
       />
-      {error && <p className="mt-2 font-mono text-[10px] text-white/60">{error}</p>}
-      <span className="mt-2 block font-mono text-[10px] text-white/30">{label} · png, jpg, webp, gif, avif · max 6MB</span>
+      {error && <p className="mt-2 font-mono text-[10px] text-muted">{error}</p>}
+      <span className="mt-2 block font-mono text-[10px] text-muted/70">{label} · png, jpg, webp, gif, avif · max 6MB</span>
     </div>
   );
 }

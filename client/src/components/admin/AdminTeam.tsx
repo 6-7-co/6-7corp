@@ -77,7 +77,7 @@ export function AdminTeam() {
       <AdminHeader
         title={t('admin.team')}
         subtitle={`${items.length} ${t('admin.team').toLowerCase()}`}
-        actions={<button onClick={() => setForm({ ...EMPTY })} className="rounded-full border border-white/20 px-5 py-2 font-mono text-[11px] uppercase tracking-wider text-white/70 hover:border-white hover:text-white">+ {t('admin.new')}</button>}
+        actions={<button onClick={() => setForm({ ...EMPTY })} className="rounded-full border border-line-strong px-5 py-2 font-mono text-[11px] uppercase tracking-wider text-fg/80 hover:border-line-strong hover:text-fg">+ {t('admin.new')}</button>}
       />
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
@@ -87,21 +87,21 @@ export function AdminTeam() {
               key={m.id}
               onClick={() => setForm({ ...m })}
               className={`flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors ${
-                form.id === m.id ? 'border-white bg-white/5' : 'border-white/10 hover:border-white/30'
+                form.id === m.id ? 'border-line-strong bg-surface' : 'border-line hover:border-line-strong'
               }`}
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-ink-800 font-mono text-xs text-white/70">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-ink-800 font-mono text-xs text-fg/80">
                 {m.photo ? <img src={m.photo} className="h-full w-full object-cover" /> : m.name.slice(0, 1)}
               </div>
               <div>
-                <div className="font-display text-sm font-semibold text-white">{m.name}</div>
-                <div className="font-mono text-[10px] text-white/35">{m.role}</div>
+                <div className="font-display text-sm font-semibold text-fg">{m.name}</div>
+                <div className="font-mono text-[10px] text-muted">{m.role}</div>
               </div>
             </button>
           ))}
         </div>
 
-        <div className="rounded-2xl border border-white/10 p-6">
+        <div className="rounded-[22px] border border-line p-6">
           <div className="grid gap-5">
             <div className="grid gap-5 sm:grid-cols-2">
               <Field label={t('admin.name')}><TextInput value={form.name} onChange={(e) => set('name', e.target.value)} /></Field>
@@ -123,9 +123,9 @@ export function AdminTeam() {
             </div>
           </div>
 
-          <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
+          <div className="mt-8 flex items-center justify-between border-t border-line pt-6">
             {form.id ? (
-              <button onClick={() => setToDelete(form)} className="font-mono text-[11px] uppercase tracking-wider text-white/40 hover:text-white/70">{t('common.delete')}</button>
+              <button onClick={() => setToDelete(form)} className="font-mono text-[11px] uppercase tracking-wider text-muted hover:text-fg">{t('common.delete')}</button>
             ) : <span />}
             <SaveButton onClick={save} label={t('common.save')} saved={saved} disabled={!form.name} />
           </div>

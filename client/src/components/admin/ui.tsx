@@ -11,10 +11,10 @@ export function AdminHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-6">
+    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold sm:text-3xl">{title}</h1>
-        {subtitle && <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">{subtitle}</p>}
+        <h1 className="display text-[26px] font-medium sm:text-[30px]">{title}</h1>
+        {subtitle && <p className="mt-2 text-[12px] uppercase tracking-[0.14em] text-muted">{subtitle}</p>}
       </div>
       {actions}
     </div>
@@ -34,13 +34,13 @@ export function Field({
     <label className="block">
       <span className="eyebrow">{label}</span>
       {children}
-      {hint && <span className="mt-1.5 block font-mono text-[10px] text-white/30">{hint}</span>}
+      {hint && <span className="mt-1.5 block font-mono text-[10px] text-muted/70">{hint}</span>}
     </label>
   );
 }
 
 const inputCls =
-  'mt-2 w-full border-b border-white/20 bg-ink-900/60 px-1 py-2.5 font-mono text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-white';
+  'mt-2 w-full rounded-[14px] border border-line bg-bg/60 px-4 py-3 text-[14px] text-fg outline-none transition-colors placeholder:text-muted/50 focus:border-line-strong';
 
 export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputCls} ${props.className ?? ''}`} />;
@@ -67,7 +67,7 @@ export function SaveButton({
       <button
         onClick={onClick}
         disabled={disabled}
-        className="rounded-full border border-white bg-white px-6 py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-black transition-colors hover:bg-transparent hover:text-white disabled:opacity-40"
+        className="rounded-full bg-fg px-6 py-2.5 text-[13px] font-semibold text-bg transition-opacity hover:opacity-85 disabled:opacity-40"
       >
         {label}
       </button>
@@ -77,7 +77,7 @@ export function SaveButton({
             initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0 }}
-            className="font-mono text-[11px] uppercase tracking-wider text-white/60"
+            className="text-[12px] text-muted"
           >
             ✓ Saved
           </motion.span>
@@ -103,7 +103,7 @@ export function ConfirmDialog({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[80] grid place-items-center bg-black/70 p-5"
+          className="fixed inset-0 z-[80] grid place-items-center bg-bg/70 p-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -114,16 +114,16 @@ export function ConfirmDialog({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-2xl border border-white/15 bg-ink-800 p-6"
+            className="w-full max-w-sm rounded-[24px] border border-line bg-bg p-6"
           >
             <p className="font-display text-lg font-semibold">{title}</p>
             <div className="mt-6 flex justify-end gap-3">
-              <button onClick={onCancel} className="border border-white/15 px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-white/70 hover:border-white">
+              <button onClick={onCancel} className="rounded-full border border-line px-4 py-2 text-[12.5px] font-medium text-muted transition-colors hover:border-line-strong hover:text-fg">
                 Cancel
               </button>
               <button
                 onClick={onConfirm}
-                className="border border-white bg-white px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-black hover:bg-transparent hover:text-white"
+                className="rounded-full bg-fg px-4 py-2 text-[12.5px] font-semibold text-bg hover:opacity-85"
               >
                 Delete
               </button>

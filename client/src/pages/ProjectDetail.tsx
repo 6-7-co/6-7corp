@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Reveal } from '../components/Reveal';
 import { api } from '../lib/api';
 import { CorpMarkdown } from '../lib/markdown';
-import { Reveal } from '../components/Reveal';
+import { useI18n } from '../i18n';
 import type { Project } from '../context/ContentContext';
 
 export function ProjectDetail() {
   const { slug } = useParams();
+  const { t } = useI18n();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,19 +23,22 @@ export function ProjectDetail() {
 
   if (loading) {
     return (
-      <div className="grid min-h-[60vh] place-items-center">
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/40">Loading…</span>
+      <div className="grid min-h-[60vh] place-items-center pt-32">
+        <span className="text-[12px] uppercase tracking-[0.2em] text-muted">{t('common.loading')}…</span>
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="grid min-h-[60vh] place-items-center">
+      <div className="grid min-h-[60vh] place-items-center px-5 pt-32">
         <div className="text-center">
           <p className="display text-4xl">404</p>
-          <Link to="/" className="mt-4 inline-block font-mono text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white">
-            ← Back
+          <Link
+            to="/#work"
+            className="mt-6 inline-block rounded-full border border-line-strong px-5 py-2.5 text-[13px] font-semibold transition-colors hover:bg-surface-soft"
+          >
+            ← {t('nav.projects')}
           </Link>
         </div>
       </div>
@@ -42,30 +46,35 @@ export function ProjectDetail() {
   }
 
   return (
-    <article className="relative pt-32">
-      <div className="mx-auto max-w-4xl px-5 sm:px-8">
+    <article className="relative pb-24 pt-32 sm:pt-40">
+      <div className="mx-auto w-full max-w-4xl px-5 sm:px-8">
         <Reveal>
           <Link
             to="/#work"
-            className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
+            className="text-[12.5px] uppercase tracking-[0.16em] text-muted transition-colors hover:text-fg"
           >
-            ← {project.client || 'Work'}
+            ← {t('nav.projects')}
           </Link>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="display mt-6 text-4xl sm:text-6xl">{project.title}</h1>
+          <h1 className="display mt-6 text-[clamp(2rem,5vw,3.6rem)] font-medium">{project.title}</h1>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+          <div className="mt-5 flex flex-wrap items-center gap-3 text-[12.5px] text-muted">
             <span>{project.client}</span>
-            <span className="text-white/20">/</span>
+            <span className="tick" />
             <span>{project.year}</span>
             {project.link && (
               <>
-                <span className="text-white/20">/</span>
-                <a href={project.link} target="_blank" rel="noreferrer noopener" className="text-white/70 hover:text-white">
+                <span className="tick" />
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-fg underline decoration-line-strong underline-offset-4 transition-opacity hover:opacity-70"
+                >
                   Live ↗
                 </a>
               </>
@@ -74,42 +83,51 @@ export function ProjectDetail() {
         </Reveal>
 
         {project.cover && (
-          <Reveal delay={0.15}>
-            <div className="mt-8 overflow-hidden rounded-2xl border border-white/10">
-              <img src={project.cover} alt={project.title} className="w-full object-cover grayscale" />
+          <Reveal delay={0.14}>
+            <div className="mt-9 overflow-hidden rounded-[26px] border border-line">
+              <img src={project.cover} alt={project.title} className="w-full object-cover" />
             </div>
           </Reveal>
         )}
 
         {project.tags && (
-          <Reveal delay={0.15}>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {project.tags.split(',').map((tag) => (
-                <span key={tag} className="border border-white/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/60">
-                  {tag.trim()}
-                </span>
-              ))}
+          <Reveal delay={0.14}>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {project.tags
+                .split(',')
+                .filter(Boolean)
+                .map((tag) => (
+                  <span key={tag} className="rounded-full border border-line px-3 py-1 text-[11.5px] text-muted">
+                    {tag.trim()}
+                  </span>
+                ))}
             </div>
           </Reveal>
         )}
 
-        <div className="mt-10">
-          <CorpMarkdown markdown={project.body_md ?? ''} />
-        </div>
+        <Reveal delay={0.16}>
+          <div className="mt-10 border-t border-line pt-10">
+            <CorpMarkdown markdown={project.body_md ?? ''} />
+          </div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-16 border-t border-white/10 pt-8"
-        >
-          <Link
-            to="/#work"
-            className="font-mono text-xs uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
-          >
-            ← Back to work
-          </Link>
-        </motion.div>
+        <Reveal delay={0.1}>
+          <div className="mt-16 flex flex-wrap gap-3 border-t border-line pt-8">
+            <Link
+              to="/contact"
+              className="rounded-full px-5 py-3 text-[13px] font-semibold transition-transform hover:-translate-y-0.5"
+              style={{ background: 'var(--cta-bg)', color: 'var(--cta-fg)' }}
+            >
+              {t('nav.cta')}
+            </Link>
+            <Link
+              to="/#work"
+              className="rounded-full border border-line-strong px-5 py-3 text-[13px] font-semibold transition-colors hover:bg-surface-soft"
+            >
+              ← {t('nav.projects')}
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </article>
   );
