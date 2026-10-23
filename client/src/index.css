@@ -82,6 +82,8 @@
   --shadow-soft: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
   --cta-bg: #c9f5dd;
   --cta-fg: #08130d;
+  --card-glow-a: rgba(201, 245, 221, 0.14);
+  --card-glow-b: rgba(169, 202, 255, 0.12);
   color-scheme: dark;
 }
 
@@ -102,6 +104,8 @@
   --shadow-soft: 0 30px 80px -50px rgba(0, 0, 0, 0.35);
   --cta-bg: #c9f5dd;
   --cta-fg: #08130d;
+  --card-glow-a: rgba(124, 217, 173, 0.16);
+  --card-glow-b: rgba(127, 169, 245, 0.14);
   color-scheme: light;
 }
 
@@ -206,14 +210,18 @@ p { text-wrap: pretty; }
   transform: translateY(-2px);
 }
 
-/* Pastel gradient card (dark text on it in both themes). */
-.pastel {
+/* Stat card under the hero — neutral surface with a very soft accent glow.
+   Tune the two glow variables below to restyle it without touching markup. */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  border: 1px solid var(--line);
   background:
-    radial-gradient(120% 140% at 8% 10%, #e7f8ee 0%, transparent 55%),
-    radial-gradient(120% 140% at 92% 12%, #e6f0ff 0%, transparent 58%),
-    radial-gradient(120% 160% at 50% 105%, #efe6ff 0%, transparent 62%),
-    linear-gradient(115deg, #f0f8f4 0%, #eaf1ff 45%, #f3ecff 100%);
-  color: #0b0b0d;
+    radial-gradient(110% 150% at 12% 0%, var(--card-glow-a) 0%, transparent 58%),
+    radial-gradient(110% 150% at 88% 100%, var(--card-glow-b) 0%, transparent 60%),
+    var(--bg-1);
+  box-shadow: var(--shadow-soft);
 }
 
 .tick {

@@ -14,7 +14,8 @@ function initials(name: string) {
 
 export function Team() {
   const { pick, t } = useI18n();
-  const { team } = useContent();
+  const { team, settings } = useContent();
+  const email = settings.email || 'hello@6-7corp.com';
 
   return (
     <section id="team" className="relative scroll-mt-28 border-t border-line py-24 sm:py-32">
@@ -72,8 +73,8 @@ export function Team() {
         <Reveal delay={0.1} className="mt-12">
           <p className="text-[14px] text-muted">
             {pick({
-              ru: 'Хотите присоединиться? Напишите на hello@6-7corp.com — читаем всё.',
-              en: 'Want to join? Write to hello@6-7corp.com — we read everything.',
+              ru: `Хотите присоединиться? Напишите на ${email} — читаем всё.`,
+              en: `Want to join? Write to ${email} — we read everything.`,
             })}
           </p>
         </Reveal>

@@ -1,10 +1,15 @@
 import { Reveal } from '../components/Reveal';
 import { ContactForm } from '../components/ContactForm';
 import { useI18n } from '../i18n';
+import { useContent } from '../context/ContentContext';
+import { pickPair } from '../lib/localized';
 import { CONTACT } from '../content';
 
 export function ContactCTA() {
-  const { pick } = useI18n();
+  const { pick, lang } = useI18n();
+  const { settings } = useContent();
+  const email = settings.email || 'hello@6-7corp.com';
+  const location = pickPair(lang, settings.location_ru, settings.location_en) || pick(CONTACT.location);
 
   return (
     <section id="contact" className="relative scroll-mt-28 border-t border-line py-24 sm:py-32">
@@ -28,8 +33,8 @@ export function ContactCTA() {
                     {CONTACT.emailLabel}
                   </dt>
                   <dd>
-                    <a href="mailto:hello@6-7corp.com" className="link-soft text-[15px]">
-                      hello@6-7corp.com
+                    <a href={`mailto:${email}`} className="link-soft text-[15px]">
+                      {email}
                     </a>
                   </dd>
                 </div>
@@ -37,7 +42,7 @@ export function ContactCTA() {
                   <dt className="text-[11.5px] uppercase tracking-[0.16em] text-muted/70">
                     {pick(CONTACT.locationLabel)}
                   </dt>
-                  <dd className="text-[15px] text-fg">{pick(CONTACT.location)}</dd>
+                  <dd className="text-[15px] text-fg">{location}</dd>
                 </div>
                 <div className="flex flex-col gap-1">
                   <dt className="text-[11.5px] uppercase tracking-[0.16em] text-muted/70">

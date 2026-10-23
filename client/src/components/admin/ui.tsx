@@ -39,15 +39,30 @@ export function Field({
   );
 }
 
-const inputCls =
-  'mt-2 w-full rounded-[14px] border border-line bg-bg/60 px-4 py-3 text-[14px] text-fg outline-none transition-colors placeholder:text-muted/50 focus:border-line-strong';
+const inputBase =
+  'w-full rounded-[14px] border border-line bg-bg/60 px-4 py-3 text-[14px] text-fg outline-none transition-colors placeholder:text-muted/50 focus:border-line-strong';
 
-export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} className={`${inputCls} ${props.className ?? ''}`} />;
+type MarginProp = { noMargin?: boolean };
+
+export function TextInput({
+  noMargin,
+  className,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & MarginProp) {
+  return <input {...props} className={`${inputBase} ${noMargin ? '' : 'mt-2'} ${className ?? ''}`} />;
 }
 
-export function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea {...props} className={`${inputCls} resize-y leading-relaxed ${props.className ?? ''}`} />;
+export function TextArea({
+  noMargin,
+  className,
+  ...props
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & MarginProp) {
+  return (
+    <textarea
+      {...props}
+      className={`${inputBase} resize-y leading-relaxed ${noMargin ? '' : 'mt-2'} ${className ?? ''}`}
+    />
+  );
 }
 
 /** Save button that briefly reports success. */
